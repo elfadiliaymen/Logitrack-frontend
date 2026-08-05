@@ -2,28 +2,28 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
 
 const schema = yup.object({
-  clientId: yup.string().required("Client requis"),
   statut: yup.string().required("Statut requis"),
 });
 
-export default function OrderForm() {
+export default function EditOrderForm() {
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
   const [clients, setClients] = useState([]);
+  const [clientId, setClientId] = useState("");
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
-    defaultValues: {
-      statut: "EN_ATTENTE",
-    },
   });
 
   useEffect(
@@ -36,15 +36,28 @@ export default function OrderForm() {
         .catch(function (error) {
           console.log("Erreur :", error);
         });
+
+      api
+        .get("/orders/" + id)
+        .then(function (response) {
+          reset({ statut: response.data.statut });
+        })
+        .catch(function (error) {
+          console.log("Erreur :", error);
+        });
     },
-    []
+    [id, reset]
   );
 
   function onSubmit(data) {
+    const request = clientId
+      ? { ...data, clientId }
+      : data;
+
     api
-      .post("/orders", data)
-      .then(function (response) {
-        navigate("/orders/" + response.data.id);
+      .put("/orders/" + id, request)
+      .then(function () {
+        navigate("/orders");
       })
       .catch(function (error) {
         console.log("Erreur :", error);
@@ -53,14 +66,19 @@ export default function OrderForm() {
 
   return (
     <div>
-      <h2>Nouvelle commande</h2>
+      <h2>Modifier la commande</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
-          <label>Client</label>
+          <label>Client (optionnel)</label>
 
-          <select {...register("clientId")}>
-            <option value="">Choisir un client</option>
+          <select
+            value={clientId}
+            onChange={function (event) {
+              setClientId(event.target.value);
+            }}
+          >
+            <option value="">Conserver le client actuel</option>
 
             {clients.map(function (client) {
               return (
@@ -70,8 +88,6 @@ export default function OrderForm() {
               );
             })}
           </select>
-
-          {errors.clientId && <span>{errors.clientId.message}</span>}
         </div>
 
         <div>
@@ -86,7 +102,7 @@ export default function OrderForm() {
           {errors.statut && <span>{errors.statut.message}</span>}
         </div>
 
-        <button type="submit">Créer</button>
+        <button type="submit">Enregistrer</button>
       </form>
     </div>
   );

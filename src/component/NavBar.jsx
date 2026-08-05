@@ -1,17 +1,19 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { getRole } from "./token";
 
 export default function NavBar() {
+  const role = getRole();
+
   return (
-    <nav>
+    <nav className="sidebar">
       <ul>
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/products">Products</Link></li>
+        <li><Link to="/dashboard">Dashboard</Link></li>
+        <li><Link to="/clients">Clients</Link></li>
         <li><Link to="/orders">Orders</Link></li>
-        <li><Link to="/contact">Contact</Link></li>
+        <li><Link to="/products">Products</Link></li>
+        {role === "ADMIN" && <li><Link to="/users">Users</Link></li>}
       </ul>
     </nav>
   );
 }
-
-export default NavBar;

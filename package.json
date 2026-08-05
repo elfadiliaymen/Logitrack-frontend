@@ -10,8 +10,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@hookform/resolvers": "^5.7.1",
+    "@mui/icons-material": "^9.3.0",
+    "@mui/material": "^9.3.0",
+    "axios": "^1.19.0",
+    "prop-types": "^15.8.1",
     "react": "^19.2.8",
-    "react-dom": "^19.2.8"
+    "react-dom": "^19.2.8",
+    "react-hook-form": "^7.84.0",
+    "react-router-dom": "^7.11.0",
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@types/react": "^19.2.17",
