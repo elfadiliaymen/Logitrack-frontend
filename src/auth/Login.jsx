@@ -26,7 +26,7 @@ export default function Login() {
     api
       .post("/auth/login", data)
       .then((response) => {
-        saveSession(response.data.token, response.data.user);
+        saveSession(response.data.token);
 
         navigate("/dashboard");
       })

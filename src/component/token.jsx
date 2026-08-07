@@ -1,30 +1,36 @@
-function decodeToken(token) {
-  if (!token) return null;
-
-  try {
-    const part = token.split(".")[1];
-    const base64 = part.replace(/-/g, "+").replace(/_/g, "/");
-    const padded = base64.padEnd(
-      base64.length + ((4 - (base64.length % 4)) % 4),
-      "="
-    );
-
-    return JSON.parse(atob(padded));
-  } catch {
-    return null;
-  }
-}
+import { jwtDecode } from "jwt-decode";
 
 function getToken() {
   return localStorage.getItem("token");
 }
 
-function getUser() {
+function decodeToken(token) {
+  if (!token) return null;
+
   try {
-    return JSON.parse(localStorage.getItem("user") || "null");
+    return jwtDecode(token);
   } catch {
     return null;
   }
+}
+
+function getClaims() {
+  return decodeToken(getToken());
+}
+
+function getUser() {
+  const claims = getClaims();
+
+  if (!claims) return null;
+
+  return {
+    id: claims.id || claims.userId || null,
+    username: claims.username || claims.sub || null,
+    nom: claims.nom || claims.lastName || null,
+    prenom: claims.prenom || claims.firstName || null,
+    email: claims.email || null,
+    role: claims.role || claims.roles || null,
+  };
 }
 
 function isTokenExpired(payload) {
@@ -38,42 +44,35 @@ function isAuthenticated() {
 
   if (!token) return false;
 
-  return !isTokenExpired(decodeToken(token));
+  const payload = decodeToken(token);
+
+  return !isTokenExpired(payload);
 }
 
 function getRole() {
-  const payload = decodeToken(getToken());
-
-  if (payload && payload.role) return payload.role;
-
   const user = getUser();
 
   return user ? user.role : null;
 }
 
 function getUserId() {
-  const payload = decodeToken(getToken());
+  const claims = getClaims();
 
-  return payload && payload.id ? payload.id : null;
+  return claims && claims.id ? claims.id : null;
 }
 
-function saveSession(token, user) {
+function saveSession(token) {
   localStorage.setItem("token", token);
-
-  if (user) {
-    localStorage.setItem("user", JSON.stringify(user));
-  }
 }
 
 function clearSession() {
   localStorage.removeItem("token");
-  localStorage.removeItem("user");
-  localStorage.removeItem("role");
 }
 
 export {
-  decodeToken,
   getToken,
+  decodeToken,
+  getClaims,
   getUser,
   isTokenExpired,
   isAuthenticated,

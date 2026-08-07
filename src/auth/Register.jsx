@@ -59,7 +59,7 @@ export default function Register() {
       .post("/auth/register", registerRequest)
       .then(function (response) {
         console.log("Inscription réussie");
-        saveSession(response.data.token, response.data.user);
+        saveSession(response.data.token);
         navigate("/dashboard");
       })
       .catch(function (error) {
