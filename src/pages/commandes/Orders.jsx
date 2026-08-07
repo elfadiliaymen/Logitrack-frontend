@@ -2,27 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import { getRole } from "../../component/token";
-import ActionMenu from "../../component/ActionMenu";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel,
-  Paper,
-  IconButton,
-  Tooltip,
-  Button,
-  Menu,
-  MenuItem,
-  Box,
-} from "@mui/material";
-
-import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import Pagination from "@mui/material/Pagination";
 
 const STATUSES = [
   "NOUVELLE",
@@ -35,12 +15,11 @@ const STATUSES = [
 export default function Orders() {
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [totalElements, setTotalElements] = useState(0);
-  const [sortBy, setSortBy] = useState("id");
+  const [totalPages, setTotalPages] = useState(1);
+  const [sortBy, setSortBy] = useState("dateCommande");
   const [sortDir, setSortDir] = useState("asc");
   const [filter, setFilter] = useState("");
-  const [filterAnchor, setFilterAnchor] = useState(null);
+  const [clientNom, setClientNom] = useState("");
 
   const navigate = useNavigate();
 
@@ -55,29 +34,22 @@ export default function Orders() {
       .get("/orders", {
         params: {
           page: page,
-          size: rowsPerPage,
+          size: 10,
           sort: sortBy + "," + sortDir,
           statut: filter || undefined,
+          clientNom: clientNom || undefined,
         },
       })
       .then(function (response) {
-        if (Array.isArray(response.data)) {
-          setOrders(response.data);
-          setTotalElements(response.data.length);
-        } else if (response.data && response.data.content) {
-          setOrders(response.data.content);
-          setTotalElements(response.data.totalElements || 0);
-        } else {
-          setOrders([]);
-          setTotalElements(0);
-        }
+        setOrders(response.data.content || []);
+        setTotalPages(response.data.totalPages || 1);
       })
       .catch(function (error) {
         console.log("Erreur :", error);
       });
   }
 
-  useEffect(loadOrders, [page, rowsPerPage, sortBy, sortDir, filter]);
+  useEffect(loadOrders, [page, sortBy, sortDir, filter, clientNom]);
 
   function handleSort(field) {
     if (sortBy === field) {
@@ -111,224 +83,178 @@ export default function Orders() {
       });
   }
 
+  function sortArrow(field) {
+    if (sortBy !== field) return "";
+
+    return sortDir === "asc" ? "▲" : "▼";
+  }
+
   return (
     <div>
       <h2>List of orders</h2>
 
-      <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
-        <Tooltip title="Nouvelle commande">
-          <IconButton
-            color="primary"
-            onClick={function () {
-              navigate("/orders/new");
-            }}
-          >
-            <AddShoppingCartIcon />
-          </IconButton>
-        </Tooltip>
-
-        <span>Filtrer par statut : </span>
-
-        <Button
-          variant="outlined"
-          onClick={function (event) {
-            setFilterAnchor(event.currentTarget);
+      <div>
+        <button
+          type="button"
+          onClick={function () {
+            navigate("/orders/new");
           }}
         >
-          {filter === "" ? "Tous" : filter}
-        </Button>
+          +
+        </button>
 
-        <Menu
-          anchorEl={filterAnchor}
-          open={Boolean(filterAnchor)}
-          onClose={function () {
-            setFilterAnchor(null);
+        <label>Rechercher par client : </label>
+
+        <input
+          type="text"
+          placeholder="Nom du client"
+          value={clientNom}
+          onChange={function (event) {
+            setClientNom(event.target.value);
+            setPage(0);
+          }}
+        />
+
+        <label>Filtrer par statut : </label>
+
+        <select
+          value={filter}
+          onChange={function (event) {
+            setFilter(event.target.value);
+            setPage(0);
           }}
         >
-          <MenuItem
-            onClick={function () {
-              setFilter("");
-              setPage(0);
-              setFilterAnchor(null);
-            }}
-          >
-            Tous
-          </MenuItem>
+          <option value="">Tous</option>
 
           {STATUSES.map(function (statut) {
             return (
-              <MenuItem
-                key={statut}
-                onClick={function () {
-                  setFilter(statut);
-                  setPage(0);
-                  setFilterAnchor(null);
-                }}
-              >
+              <option key={statut} value={statut}>
                 {statut}
-              </MenuItem>
+              </option>
             );
           })}
-        </Menu>
-      </Box>
+        </select>
+      </div>
 
       {orders.length === 0 ? (
         <p>No order found</p>
       ) : (
-        <Paper>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === "id"}
-                      direction={sortBy === "id" ? sortDir : "asc"}
-                      onClick={function () {
-                        handleSort("id");
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+
+              <th>Client</th>
+
+              <th>Articles</th>
+
+              <th>
+                <button
+                  type="button"
+                  onClick={function () {
+                    handleSort("dateCommande");
+                  }}
+                >
+                  Date {sortArrow("dateCommande")}
+                </button>
+              </th>
+
+              <th>
+                <button
+                  type="button"
+                  onClick={function () {
+                    handleSort("statut");
+                  }}
+                >
+                  Status {sortArrow("statut")}
+                </button>
+              </th>
+
+              <th>Action</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {orders.map(function (order) {
+              return (
+                <tr key={order.id}>
+                  <td>{order.id}</td>
+
+                  <td>{order.client ? order.client.nom : "-"}</td>
+
+                  <td>
+                    {order.ligneCommandes
+                      ? order.ligneCommandes.length
+                      : 0}
+                  </td>
+
+                  <td>{order.dateCommande || "-"}</td>
+
+                  <td>
+                    <select
+                      value={order.statut}
+                      onChange={function (event) {
+                        handleChangeStatus(order, event.target.value);
                       }}
                     >
-                      ID
-                    </TableSortLabel>
-                  </TableCell>
+                      {STATUSES.map(function (statut) {
+                        return (
+                          <option key={statut} value={statut}>
+                            {statut}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </td>
 
-                  <TableCell>
-                    Client
-                  </TableCell>
-
-                  <TableCell>
-                    Articles
-                  </TableCell>
-
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === "dateCommande"}
-                      direction={
-                        sortBy === "dateCommande" ? sortDir : "asc"
-                      }
+                  <td>
+                    <button
+                      type="button"
                       onClick={function () {
-                        handleSort("dateCommande");
+                        navigate("/orders/" + order.id);
                       }}
                     >
-                      Date
-                    </TableSortLabel>
-                  </TableCell>
+                      View
+                    </button>
 
-                  <TableCell>
-                    <TableSortLabel
-                      active={sortBy === "statut"}
-                      direction={sortBy === "statut" ? sortDir : "asc"}
-                      onClick={function () {
-                        handleSort("statut");
-                      }}
-                    >
-                      Status
-                    </TableSortLabel>
-                  </TableCell>
+                    {canEdit && (
+                      <button
+                        type="button"
+                        onClick={function () {
+                          navigate("/orders/" + order.id + "/edit");
+                        }}
+                      >
+                        Edit
+                      </button>
+                    )}
 
-                  <TableCell>
-                    Action
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-
-              <TableBody>
-                {orders.map(function (order) {
-                  return (
-                    <TableRow key={order.id}>
-                      <TableCell>{order.id}</TableCell>
-
-                      <TableCell>
-                        {order.client ? order.client.nom : "-"}
-                      </TableCell>
-
-                      <TableCell>
-                        {order.ligneCommandes
-                          ? order.ligneCommandes.length
-                          : 0}
-                      </TableCell>
-
-                      <TableCell>
-                        {order.dateCommande || "-"}
-                      </TableCell>
-
-                      <TableCell>
-                        <select
-                          value={order.statut}
-                          onChange={function (event) {
-                            handleChangeStatus(
-                              order,
-                              event.target.value
-                            );
-                          }}
-                        >
-                          {STATUSES.map(function (statut) {
-                            return (
-                              <option key={statut} value={statut}>
-                                {statut}
-                              </option>
-                            );
-                          })}
-                        </select>
-                      </TableCell>
-
-                      <TableCell>
-                        <ActionMenu
-                          options={[
-                            {
-                              label: "View",
-                              onClick: function () {
-                                navigate("/orders/" + order.id);
-                              },
-                            },
-                            ...(canEdit
-                              ? [
-                                  {
-                                    label: "Edit",
-                                    onClick: function () {
-                                      navigate(
-                                        "/orders/" + order.id + "/edit"
-                                      );
-                                    },
-                                  },
-                                ]
-                              : []),
-                            ...(canDelete
-                              ? [
-                                  {
-                                    label: "Delete",
-                                    onClick: function () {
-                                      handleDelete(order.id);
-                                    },
-                                  },
-                                ]
-                              : []),
-                          ]}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={totalElements}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={function (event, newPage) {
-              setPage(newPage);
-            }}
-            onRowsPerPageChange={function (event) {
-              setRowsPerPage(parseInt(event.target.value, 10));
-              setPage(0);
-            }}
-          />
-        </Paper>
+                    {canDelete && (
+                      <button
+                        type="button"
+                        onClick={function () {
+                          handleDelete(order.id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                    )}
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       )}
+
+      <div>
+        <Pagination
+          count={totalPages}
+          page={page + 1}
+          onChange={function (event, value) {
+            setPage(value - 1);
+          }}
+        />
+      </div>
     </div>
   );
 }

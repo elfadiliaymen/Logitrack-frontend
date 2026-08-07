@@ -4,9 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import Box from "@mui/material/Box";
 
 const schema = yup.object({
   nom: yup.string().required("Nom requis"),
@@ -50,66 +47,41 @@ export default function ProductForm() {
     <div>
       <h2>Nouveau produit</h2>
 
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        sx={{
-          border: "1px solid",
-          borderColor: "divider",
-          borderRadius: 1,
-          p: 3,
-          maxWidth: 480,
-        }}
-      >
-        <TextField
-          label="Nom"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          {...register("nom")}
-          error={!!errors.nom}
-          helperText={errors.nom ? errors.nom.message : ""}
-        />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label>Nom</label>
+          <input type="text" {...register("nom")} />
 
-        <TextField
-          label="Catégorie"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          {...register("categorie")}
-          error={!!errors.categorie}
-          helperText={errors.categorie ? errors.categorie.message : ""}
-        />
+          {errors.nom && <span>{errors.nom.message}</span>}
+        </div>
 
-        <TextField
-          label="Prix"
-          type="number"
-          slotProps={{ htmlInput: { step: "0.01" } }}
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          {...register("prix")}
-          error={!!errors.prix}
-          helperText={errors.prix ? errors.prix.message : ""}
-        />
+        <div>
+          <label>Catégorie</label>
+          <input type="text" {...register("categorie")} />
 
-        <TextField
-          label="Quantité en stock"
-          type="number"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          {...register("quantiteStock")}
-          error={!!errors.quantiteStock}
-          helperText={
-            errors.quantiteStock ? errors.quantiteStock.message : ""
-          }
-        />
+          {errors.categorie && (
+            <span>{errors.categorie.message}</span>
+          )}
+        </div>
 
-        <Button type="submit" variant="contained">
-          Créer
-        </Button>
-      </Box>
+        <div>
+          <label>Prix</label>
+          <input type="number" step="0.01" {...register("prix")} />
+
+          {errors.prix && <span>{errors.prix.message}</span>}
+        </div>
+
+        <div>
+          <label>Quantité en stock</label>
+          <input type="number" {...register("quantiteStock")} />
+
+          {errors.quantiteStock && (
+            <span>{errors.quantiteStock.message}</span>
+          )}
+        </div>
+
+        <button type="submit">Créer</button>
+      </form>
     </div>
   );
 }

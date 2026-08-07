@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/api";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
-import MenuItem from "@mui/material/MenuItem";
-import Box from "@mui/material/Box";
 
 const STATUSES = [
   "NOUVELLE",
@@ -95,7 +91,10 @@ export default function OrderDetails() {
   const total =
     order.ligneCommandes && order.ligneCommandes.length > 0
       ? order.ligneCommandes.reduce(function (sum, ligne) {
-          return sum + (ligne.produit ? ligne.produit.prix : 0) * ligne.quantite;
+          return (
+            sum +
+            (ligne.produit ? ligne.produit.prix : 0) * ligne.quantite
+          );
         }, 0)
       : 0;
 
@@ -139,15 +138,11 @@ export default function OrderDetails() {
               return (
                 <tr key={ligne.id}>
                   <td>{ligne.id}</td>
-                  <td>
-                    {ligne.produit ? ligne.produit.nom : "-"}
-                  </td>
+                  <td>{ligne.produit ? ligne.produit.nom : "-"}</td>
                   <td>
                     {ligne.produit ? ligne.produit.categorie : "-"}
                   </td>
-                  <td>
-                    {ligne.produit ? ligne.produit.prix : "-"}
-                  </td>
+                  <td>{ligne.produit ? ligne.produit.prix : "-"}</td>
                   <td>{ligne.quantite}</td>
                   <td>
                     {ligne.produit
@@ -167,57 +162,40 @@ export default function OrderDetails() {
         <strong>Total:</strong> {total.toFixed(2)}
       </p>
 
-      <Box
-        component="div"
-        sx={{
-          border: "1px solid",
-          borderColor: "divider",
-          borderRadius: 1,
-          p: 2,
-          mb: 2,
-          display: "flex",
-          alignItems: "center",
-          gap: 1,
-        }}
-      >
-        <TextField
-          select
-          label="Produit"
-          variant="outlined"
-          size="small"
-          sx={{ minWidth: 220 }}
+      <div>
+        <label>Produit</label>
+
+        <select
           value={productId}
           onChange={function (event) {
             setProductId(event.target.value);
           }}
         >
-          <MenuItem value="">Choisir un produit</MenuItem>
+          <option value="">Choisir un produit</option>
 
           {products.map(function (product) {
             return (
-              <MenuItem key={product.id} value={product.id}>
+              <option key={product.id} value={product.id}>
                 {product.nom}
-              </MenuItem>
+              </option>
             );
           })}
-        </TextField>
+        </select>
 
-        <TextField
-          label="Quantité"
+        <label>Quantité</label>
+        <input
           type="number"
-          variant="outlined"
-          size="small"
-          inputProps={{ min: 1 }}
+          min="1"
           value={quantite}
           onChange={function (event) {
             setQuantite(Number(event.target.value));
           }}
         />
 
-        <Button variant="contained" onClick={handleAddProduct}>
+        <button type="button" onClick={handleAddProduct}>
           Ajouter au produit
-        </Button>
-      </Box>
+        </button>
+      </div>
 
       <div>
         <label>Changer le statut : </label>
@@ -237,19 +215,19 @@ export default function OrderDetails() {
           })}
         </select>
 
-        <Button variant="contained" onClick={handleChangeStatus}>
+        <button type="button" onClick={handleChangeStatus}>
           Enregistrer
-        </Button>
+        </button>
       </div>
 
-      <Button
-        variant="outlined"
+      <button
+        type="button"
         onClick={function () {
           navigate("/orders");
         }}
       >
         Back
-      </Button>
+      </button>
     </div>
   );
 }

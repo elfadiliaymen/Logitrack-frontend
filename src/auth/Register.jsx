@@ -73,7 +73,6 @@ export default function Register() {
       <h2>Inscription</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-
         <div>
           <label>Username</label>
           <input type="text" {...register("username")} />
@@ -148,7 +147,6 @@ export default function Register() {
         <button type="submit">
           S'inscrire
         </button>
-
       </form>
 
       <p>

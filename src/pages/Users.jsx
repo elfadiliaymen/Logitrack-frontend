@@ -1,17 +1,6 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/api";
-
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TablePagination,
-  TableRow,
-  TableSortLabel,
-  Paper,
-} from "@mui/material";
+import Pagination from "@mui/material/Pagination";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -40,76 +29,42 @@ export default function Users() {
       {users.length === 0 ? (
         <p>Aucun utilisateur trouvé</p>
       ) : (
-        <Paper>
-          <TableContainer>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>
-                    <TableSortLabel>
-                      ID
-                    </TableSortLabel>
-                  </TableCell>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Username</th>
+              <th>Nom</th>
+              <th>Email</th>
+              <th>Rôle</th>
+            </tr>
+          </thead>
 
-                  <TableCell>
-                    <TableSortLabel>
-                      Username
-                    </TableSortLabel>
-                  </TableCell>
+          <tbody>
+            {users.map(function (user) {
+              return (
+                <tr key={user.id}>
+                  <td>{user.id}</td>
 
-                  <TableCell>
-                    <TableSortLabel>
-                      Nom
-                    </TableSortLabel>
-                  </TableCell>
+                  <td>{user.username}</td>
 
-                  <TableCell>
-                    <TableSortLabel>
-                      Email
-                    </TableSortLabel>
-                  </TableCell>
+                  <td>
+                    {user.prenom} {user.nom}
+                  </td>
 
-                  <TableCell>
-                    <TableSortLabel>
-                      Rôle
-                    </TableSortLabel>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
+                  <td>{user.email}</td>
 
-              <TableBody>
-                {users.map(function (user) {
-                  return (
-                    <TableRow key={user.id}>
-                      <TableCell>{user.id}</TableCell>
-
-                      <TableCell>{user.username}</TableCell>
-
-                      <TableCell>
-                        {user.prenom} {user.nom}
-                      </TableCell>
-
-                      <TableCell>{user.email}</TableCell>
-
-                      <TableCell>{user.role}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25]}
-            component="div"
-            count={users.length}
-            rowsPerPage={5}
-            page={0}
-            onPageChange={function () {}}
-            onRowsPerPageChange={function () {}}
-          />
-        </Paper>
+                  <td>{user.role}</td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       )}
+
+      <div>
+        <Pagination count={10} />
+      </div>
     </div>
   );
 }

@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/api";
-import Button from "@mui/material/Button";
 
 export default function ClientDetails() {
-
   const { id } = useParams();
 
   const navigate = useNavigate();
 
   const [client, setClient] = useState(null);
 
-  useEffect(function () {
-
-    api.get("/clients/" + id)
-      .then(function (response) {
-        setClient(response.data);
-      })
-      .catch(function (error) {
-        console.log("Erreur :", error);
-      });
-
-  }, [id]);
+  useEffect(
+    function () {
+      api
+        .get("/clients/" + id)
+        .then(function (response) {
+          setClient(response.data);
+        })
+        .catch(function (error) {
+          console.log("Erreur :", error);
+        });
+    },
+    [id]
+  );
 
   if (client === null) {
     return <p>Loading...</p>;
@@ -29,7 +29,6 @@ export default function ClientDetails() {
 
   return (
     <div>
-
       <h2>Client details</h2>
 
       <p>
@@ -52,15 +51,14 @@ export default function ClientDetails() {
         <strong>City:</strong> {client.ville}
       </p>
 
-      <Button
-        variant="outlined"
+      <button
+        type="button"
         onClick={function () {
           navigate("/clients");
         }}
       >
         Back
-      </Button>
-
+      </button>
     </div>
   );
 }

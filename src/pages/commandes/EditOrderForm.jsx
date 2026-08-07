@@ -4,8 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 
 const STATUSES = [
   "NOUVELLE",
@@ -86,17 +84,7 @@ export default function EditOrderForm() {
     <div>
       <h2>Modifier la commande</h2>
 
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        sx={{
-          border: "1px solid",
-          borderColor: "divider",
-          borderRadius: 1,
-          p: 3,
-          maxWidth: 480,
-        }}
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label>Client</label>
 
@@ -134,10 +122,8 @@ export default function EditOrderForm() {
           {errors.statut && <span>{errors.statut.message}</span>}
         </div>
 
-        <Button type="submit" variant="contained">
-          Enregistrer
-        </Button>
-      </Box>
+        <button type="submit">Enregistrer</button>
+      </form>
     </div>
   );
 }

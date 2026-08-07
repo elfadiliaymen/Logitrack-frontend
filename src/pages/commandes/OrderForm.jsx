@@ -4,8 +4,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
 
 const schema = yup.object({
   clientId: yup.string().required("Client requis"),
@@ -61,17 +59,7 @@ export default function OrderForm() {
     <div>
       <h2>Nouvelle commande</h2>
 
-      <Box
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        sx={{
-          border: "1px solid",
-          borderColor: "divider",
-          borderRadius: 1,
-          p: 3,
-          maxWidth: 480,
-        }}
-      >
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div>
           <label>Client</label>
 
@@ -102,10 +90,8 @@ export default function OrderForm() {
           {errors.statut && <span>{errors.statut.message}</span>}
         </div>
 
-        <Button type="submit" variant="contained">
-          Créer
-        </Button>
-      </Box>
+        <button type="submit">Créer</button>
+      </form>
     </div>
   );
 }

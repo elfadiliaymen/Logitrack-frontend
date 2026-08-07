@@ -16,6 +16,7 @@ import ProductForm from "./pages/produits/ProductForm";
 import EditProductForm from "./pages/produits/EditProductForm";
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
+import Profile from "./pages/Profile";
 import RouteGuard from "./component/RouteGuard";
 import RoleGuard from "./component/RoleGuard";
 import AccessDenied from "./component/AccessDenied";
@@ -30,15 +31,15 @@ function App() {
   const [navOpen, setNavOpen] = useState(true);
 
   return (
-    <div className="app">
+    <div>
       <Header
         onToggleMenu={function () {
           setNavOpen(!navOpen);
         }}
       />
-      <div className="app-body">
+      <div>
         <NavBar open={navOpen} />
-        <main className="app-content">
+        <main>
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
@@ -58,6 +59,15 @@ function App() {
             element={
               <RoleGuard allowedRoles={ALL_ROLES}>
                 <Dashboard />
+              </RoleGuard>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <RoleGuard allowedRoles={ALL_ROLES}>
+                <Profile />
               </RoleGuard>
             }
           />
