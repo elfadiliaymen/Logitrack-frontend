@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
+import { saveSession } from "../component/token";
 
 const schema = yup.object({
   username: yup.string().required("Username requis"),
@@ -58,7 +59,8 @@ export default function Register() {
       .post("/auth/register", registerRequest)
       .then(function (response) {
         console.log("Inscription réussie");
-        navigate("/login");
+        saveSession(response.data.token, response.data.user);
+        navigate("/dashboard");
       })
       .catch(function (error) {
         console.log("Inscription échouée");
@@ -148,6 +150,13 @@ export default function Register() {
         </button>
 
       </form>
+
+      <p>
+        Vous avez déjà un compte ?{" "}
+        <button type="button" onClick={() => navigate("/login")}>
+          Se connecter
+        </button>
+      </p>
     </div>
   );
 }

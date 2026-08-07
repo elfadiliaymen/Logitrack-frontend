@@ -34,7 +34,7 @@ api.interceptors.response.use(
 
     if (status === 401) {
       clearSession();
-      window.location.replace("/login");
+      window.location.replace("/register");
     }
 
     if (status === 403) {

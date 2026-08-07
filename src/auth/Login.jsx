@@ -63,6 +63,13 @@ export default function Login() {
           Se connecter
         </button>
       </form>
+
+      <p>
+        Pas encore de compte ?{" "}
+        <button type="button" onClick={() => navigate("/register")}>
+          S'inscrire
+        </button>
+      </p>
     </div>
   );
 }
