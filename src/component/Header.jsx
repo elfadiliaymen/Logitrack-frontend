@@ -2,7 +2,14 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { clearSession, getUser } from "./token";
 
-export default function Header() {
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import MenuIcon from "@mui/icons-material/Menu";
+import LogoutIcon from "@mui/icons-material/Logout";
+
+export default function Header({ onToggleMenu }) {
   const navigate = useNavigate();
 
   const user = getUser();
@@ -13,18 +20,33 @@ export default function Header() {
   }
 
   return (
-    <header className="app-header">
-      <h1>LogiTrack</h1>
+    <AppBar position="static">
+      <Toolbar>
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="menu"
+          onClick={onToggleMenu}
+          sx={{ mr: 2 }}
+        >
+          <MenuIcon />
+        </IconButton>
 
-      <div className="app-header-actions">
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          LogiTrack
+        </Typography>
+
         {user && (
-          <span>
+          <Typography sx={{ mr: 2 }}>
             {user.prenom} {user.nom}
-          </span>
+          </Typography>
         )}
 
-        <button onClick={handleLogout}>Déconnexion</button>
-      </div>
-    </header>
+        <IconButton color="inherit" onClick={handleLogout} aria-label="logout">
+          <LogoutIcon />
+        </IconButton>
+      </Toolbar>
+    </AppBar>
   );
 }

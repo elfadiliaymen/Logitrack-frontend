@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import { getRole } from "../../component/token";
+import ActionMenu from "../../component/ActionMenu";
 
 import {
   Table,
@@ -15,18 +16,31 @@ import {
   Paper,
   IconButton,
   Tooltip,
+  Button,
+  Menu,
+  MenuItem,
+  Box,
 } from "@mui/material";
 
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
-const STATUSES = ["EN_ATTENTE", "EXPEDIEE", "LIVREE"];
+const STATUSES = [
+  "NOUVELLE",
+  "EN_PREPARATION",
+  "EN_ATTENTE",
+  "EXPEDIEE",
+  "LIVREE",
+];
 
 export default function Orders() {
   const [orders, setOrders] = useState([]);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [totalElements, setTotalElements] = useState(0);
+  const [sortBy, setSortBy] = useState("id");
+  const [sortDir, setSortDir] = useState("asc");
   const [filter, setFilter] = useState("");
+  const [filterAnchor, setFilterAnchor] = useState(null);
 
   const navigate = useNavigate();
 
@@ -38,20 +52,46 @@ export default function Orders() {
 
   function loadOrders() {
     api
-      .get("/orders")
+      .get("/orders", {
+        params: {
+          page: page,
+          size: rowsPerPage,
+          sort: sortBy + "," + sortDir,
+          statut: filter || undefined,
+        },
+      })
       .then(function (response) {
-        setOrders(response.data);
+        if (Array.isArray(response.data)) {
+          setOrders(response.data);
+          setTotalElements(response.data.length);
+        } else if (response.data && response.data.content) {
+          setOrders(response.data.content);
+          setTotalElements(response.data.totalElements || 0);
+        } else {
+          setOrders([]);
+          setTotalElements(0);
+        }
       })
       .catch(function (error) {
         console.log("Erreur :", error);
       });
   }
 
-  useEffect(loadOrders, []);
+  useEffect(loadOrders, [page, rowsPerPage, sortBy, sortDir, filter]);
+
+  function handleSort(field) {
+    if (sortBy === field) {
+      setSortDir(sortDir === "asc" ? "desc" : "asc");
+    } else {
+      setSortBy(field);
+      setSortDir("asc");
+    }
+    setPage(0);
+  }
 
   function handleChangeStatus(order, statut) {
     api
-      .put("/orders/" + order.id, { statut })
+      .put("/orders/" + order.id + "/status", statut)
       .then(loadOrders)
       .catch(function (error) {
         console.log("Erreur :", error);
@@ -71,50 +111,68 @@ export default function Orders() {
       });
   }
 
-  const visibleOrders =
-    filter === ""
-      ? orders
-      : orders.filter(function (order) {
-          return order.statut === filter;
-        });
-
   return (
     <div>
       <h2>List of orders</h2>
 
-      <Tooltip title="Nouvelle commande">
-        <IconButton
-          color="primary"
-          onClick={function () {
-            navigate("/orders/new");
+      <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
+        <Tooltip title="Nouvelle commande">
+          <IconButton
+            color="primary"
+            onClick={function () {
+              navigate("/orders/new");
+            }}
+          >
+            <AddShoppingCartIcon />
+          </IconButton>
+        </Tooltip>
+
+        <span>Filtrer par statut : </span>
+
+        <Button
+          variant="outlined"
+          onClick={function (event) {
+            setFilterAnchor(event.currentTarget);
           }}
         >
-          <AddShoppingCartIcon />
-        </IconButton>
-      </Tooltip>
+          {filter === "" ? "Tous" : filter}
+        </Button>
 
-      <div>
-        <label>Filtrer par statut : </label>
-
-        <select
-          value={filter}
-          onChange={function (event) {
-            setFilter(event.target.value);
+        <Menu
+          anchorEl={filterAnchor}
+          open={Boolean(filterAnchor)}
+          onClose={function () {
+            setFilterAnchor(null);
           }}
         >
-          <option value="">Tous</option>
+          <MenuItem
+            onClick={function () {
+              setFilter("");
+              setPage(0);
+              setFilterAnchor(null);
+            }}
+          >
+            Tous
+          </MenuItem>
 
           {STATUSES.map(function (statut) {
             return (
-              <option key={statut} value={statut}>
+              <MenuItem
+                key={statut}
+                onClick={function () {
+                  setFilter(statut);
+                  setPage(0);
+                  setFilterAnchor(null);
+                }}
+              >
                 {statut}
-              </option>
+              </MenuItem>
             );
           })}
-        </select>
-      </div>
+        </Menu>
+      </Box>
 
-      {visibleOrders.length === 0 ? (
+      {orders.length === 0 ? (
         <p>No order found</p>
       ) : (
         <Paper>
@@ -123,25 +181,47 @@ export default function Orders() {
               <TableHead>
                 <TableRow>
                   <TableCell>
-                    <TableSortLabel>
+                    <TableSortLabel
+                      active={sortBy === "id"}
+                      direction={sortBy === "id" ? sortDir : "asc"}
+                      onClick={function () {
+                        handleSort("id");
+                      }}
+                    >
                       ID
                     </TableSortLabel>
                   </TableCell>
 
                   <TableCell>
-                    <TableSortLabel>
-                      Articles
-                    </TableSortLabel>
+                    Client
                   </TableCell>
 
                   <TableCell>
-                    <TableSortLabel>
+                    Articles
+                  </TableCell>
+
+                  <TableCell>
+                    <TableSortLabel
+                      active={sortBy === "dateCommande"}
+                      direction={
+                        sortBy === "dateCommande" ? sortDir : "asc"
+                      }
+                      onClick={function () {
+                        handleSort("dateCommande");
+                      }}
+                    >
                       Date
                     </TableSortLabel>
                   </TableCell>
 
                   <TableCell>
-                    <TableSortLabel>
+                    <TableSortLabel
+                      active={sortBy === "statut"}
+                      direction={sortBy === "statut" ? sortDir : "asc"}
+                      onClick={function () {
+                        handleSort("statut");
+                      }}
+                    >
                       Status
                     </TableSortLabel>
                   </TableCell>
@@ -153,10 +233,14 @@ export default function Orders() {
               </TableHead>
 
               <TableBody>
-                {visibleOrders.map(function (order) {
+                {orders.map(function (order) {
                   return (
                     <TableRow key={order.id}>
                       <TableCell>{order.id}</TableCell>
+
+                      <TableCell>
+                        {order.client ? order.client.nom : "-"}
+                      </TableCell>
 
                       <TableCell>
                         {order.ligneCommandes
@@ -189,43 +273,38 @@ export default function Orders() {
                       </TableCell>
 
                       <TableCell>
-                        <Tooltip title="View">
-                          <IconButton
-                            onClick={function () {
-                              navigate("/orders/" + order.id);
-                            }}
-                          >
-                            <VisibilityIcon />
-                          </IconButton>
-                        </Tooltip>
-
-                        {canEdit && (
-                          <Tooltip title="Edit">
-                            <IconButton
-                              color="warning"
-                              onClick={function () {
-                                navigate(
-                                  "/orders/" + order.id + "/edit"
-                                );
-                              }}
-                            >
-                              <EditIcon />
-                            </IconButton>
-                          </Tooltip>
-                        )}
-
-                        {canDelete && (
-                          <Tooltip title="Delete">
-                            <IconButton
-                              color="error"
-                              onClick={function () {
-                                handleDelete(order.id);
-                              }}
-                            >
-                              <DeleteIcon />
-                            </IconButton>
-                          </Tooltip>
-                        )}
+                        <ActionMenu
+                          options={[
+                            {
+                              label: "View",
+                              onClick: function () {
+                                navigate("/orders/" + order.id);
+                              },
+                            },
+                            ...(canEdit
+                              ? [
+                                  {
+                                    label: "Edit",
+                                    onClick: function () {
+                                      navigate(
+                                        "/orders/" + order.id + "/edit"
+                                      );
+                                    },
+                                  },
+                                ]
+                              : []),
+                            ...(canDelete
+                              ? [
+                                  {
+                                    label: "Delete",
+                                    onClick: function () {
+                                      handleDelete(order.id);
+                                    },
+                                  },
+                                ]
+                              : []),
+                          ]}
+                        />
                       </TableCell>
                     </TableRow>
                   );
@@ -237,11 +316,16 @@ export default function Orders() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={visibleOrders.length}
-            rowsPerPage={5}
-            page={0}
-            onPageChange={function () {}}
-            onRowsPerPageChange={function () {}}
+            count={totalElements}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={function (event, newPage) {
+              setPage(newPage);
+            }}
+            onRowsPerPageChange={function (event) {
+              setRowsPerPage(parseInt(event.target.value, 10));
+              setPage(0);
+            }}
           />
         </Paper>
       )}

@@ -4,6 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Box from "@mui/material/Box";
 
 const schema = yup.object({
   nom: yup.string().required("Nom requis"),
@@ -41,37 +44,62 @@ export default function ClientForm() {
     <div>
       <h2>Nouveau client</h2>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div>
-          <label>Nom</label>
-          <input type="text" {...register("nom")} />
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{
+          border: "1px solid",
+          borderColor: "divider",
+          borderRadius: 1,
+          p: 3,
+          maxWidth: 480,
+        }}
+      >
+        <TextField
+          label="Nom"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          {...register("nom")}
+          error={!!errors.nom}
+          helperText={errors.nom ? errors.nom.message : ""}
+        />
 
-          {errors.nom && <span>{errors.nom.message}</span>}
-        </div>
+        <TextField
+          label="Email"
+          type="email"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          {...register("email")}
+          error={!!errors.email}
+          helperText={errors.email ? errors.email.message : ""}
+        />
 
-        <div>
-          <label>Email</label>
-          <input type="email" {...register("email")} />
+        <TextField
+          label="Téléphone"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          {...register("telephone")}
+          error={!!errors.telephone}
+          helperText={errors.telephone ? errors.telephone.message : ""}
+        />
 
-          {errors.email && <span>{errors.email.message}</span>}
-        </div>
+        <TextField
+          label="Ville"
+          variant="outlined"
+          fullWidth
+          margin="normal"
+          {...register("ville")}
+          error={!!errors.ville}
+          helperText={errors.ville ? errors.ville.message : ""}
+        />
 
-        <div>
-          <label>Téléphone</label>
-          <input type="text" {...register("telephone")} />
-
-          {errors.telephone && <span>{errors.telephone.message}</span>}
-        </div>
-
-        <div>
-          <label>Ville</label>
-          <input type="text" {...register("ville")} />
-
-          {errors.ville && <span>{errors.ville.message}</span>}
-        </div>
-
-        <button type="submit">Créer</button>
-      </form>
+        <Button type="submit" variant="contained">
+          Créer
+        </Button>
+      </Box>
     </div>
   );
 }

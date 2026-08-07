@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import Button from "@mui/material/Button";
 
 export default function ClientDetails() {
 
@@ -51,13 +52,14 @@ export default function ClientDetails() {
         <strong>City:</strong> {client.ville}
       </p>
 
-      <button
+      <Button
+        variant="outlined"
         onClick={function () {
           navigate("/clients");
         }}
       >
         Back
-      </button>
+      </Button>
 
     </div>
   );

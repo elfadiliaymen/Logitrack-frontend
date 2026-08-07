@@ -4,6 +4,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
 
 const schema = yup.object({
   clientId: yup.string().required("Client requis"),
@@ -31,7 +33,11 @@ export default function OrderForm() {
       api
         .get("/clients")
         .then(function (response) {
-          setClients(response.data);
+          setClients(
+            Array.isArray(response.data)
+              ? response.data
+              : (response.data && response.data.content) || []
+          );
         })
         .catch(function (error) {
           console.log("Erreur :", error);
@@ -55,7 +61,17 @@ export default function OrderForm() {
     <div>
       <h2>Nouvelle commande</h2>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{
+          border: "1px solid",
+          borderColor: "divider",
+          borderRadius: 1,
+          p: 3,
+          maxWidth: 480,
+        }}
+      >
         <div>
           <label>Client</label>
 
@@ -86,8 +102,10 @@ export default function OrderForm() {
           {errors.statut && <span>{errors.statut.message}</span>}
         </div>
 
-        <button type="submit">Créer</button>
-      </form>
+        <Button type="submit" variant="contained">
+          Créer
+        </Button>
+      </Box>
     </div>
   );
 }

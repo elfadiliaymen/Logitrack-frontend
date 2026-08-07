@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import Clients from "./pages/clients/Clients";
 import ClientDetails from "./pages/clients/ClientDetails";
@@ -27,11 +27,17 @@ const ALL_ROLES = ["ADMIN", "MANAGER", "AGENT"];
 const MANAGEMENT_ROLES = ["ADMIN", "MANAGER"];
 
 function App() {
+  const [navOpen, setNavOpen] = useState(true);
+
   return (
     <div className="app">
-      <Header />
+      <Header
+        onToggleMenu={function () {
+          setNavOpen(!navOpen);
+        }}
+      />
       <div className="app-body">
-        <NavBar />
+        <NavBar open={navOpen} />
         <main className="app-content">
         <Routes>
           <Route path="/login" element={<Login />} />

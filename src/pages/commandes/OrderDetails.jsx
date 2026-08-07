@@ -1,8 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import Box from "@mui/material/Box";
 
-const STATUSES = ["EN_ATTENTE", "EXPEDIEE", "LIVREE"];
+const STATUSES = [
+  "NOUVELLE",
+  "EN_PREPARATION",
+  "EN_ATTENTE",
+  "EXPEDIEE",
+  "LIVREE",
+];
 
 export default function OrderDetails() {
   const { id } = useParams();
@@ -11,6 +21,9 @@ export default function OrderDetails() {
 
   const [order, setOrder] = useState(null);
   const [statut, setStatut] = useState("");
+  const [products, setProducts] = useState([]);
+  const [productId, setProductId] = useState("");
+  const [quantite, setQuantite] = useState(1);
 
   useEffect(
     function () {
@@ -23,13 +36,26 @@ export default function OrderDetails() {
         .catch(function (error) {
           console.log("Erreur :", error);
         });
+
+      api
+        .get("/products")
+        .then(function (response) {
+          setProducts(
+            Array.isArray(response.data)
+              ? response.data
+              : (response.data && response.data.content) || []
+          );
+        })
+        .catch(function (error) {
+          console.log("Erreur :", error);
+        });
     },
     [id]
   );
 
   function handleChangeStatus() {
     api
-      .put("/orders/" + id, { statut })
+      .put("/orders/" + id + "/status", statut)
       .then(function (response) {
         setOrder(response.data);
         setStatut(response.data.statut);
@@ -39,9 +65,39 @@ export default function OrderDetails() {
       });
   }
 
+  function handleAddProduct() {
+    if (!productId) {
+      return;
+    }
+
+    api
+      .post("/orders/" + id + "/products", {
+        produit: { id: productId },
+        quantite: quantite,
+      })
+      .then(function () {
+        return api.get("/orders/" + id);
+      })
+      .then(function (response) {
+        setOrder(response.data);
+        setProductId("");
+        setQuantite(1);
+      })
+      .catch(function (error) {
+        console.log("Erreur :", error);
+      });
+  }
+
   if (order === null) {
     return <p>Loading...</p>;
   }
+
+  const total =
+    order.ligneCommandes && order.ligneCommandes.length > 0
+      ? order.ligneCommandes.reduce(function (sum, ligne) {
+          return sum + (ligne.produit ? ligne.produit.prix : 0) * ligne.quantite;
+        }, 0)
+      : 0;
 
   return (
     <div>
@@ -56,6 +112,10 @@ export default function OrderDetails() {
       </p>
 
       <p>
+        <strong>Client:</strong> {order.client ? order.client.nom : "-"}
+      </p>
+
+      <p>
         <strong>Status:</strong> {order.statut}
       </p>
 
@@ -67,7 +127,10 @@ export default function OrderDetails() {
             <tr>
               <th>ID</th>
               <th>Produit</th>
+              <th>Catégorie</th>
+              <th>Prix unitaire</th>
               <th>Quantité</th>
+              <th>Sous-total</th>
             </tr>
           </thead>
 
@@ -79,7 +142,18 @@ export default function OrderDetails() {
                   <td>
                     {ligne.produit ? ligne.produit.nom : "-"}
                   </td>
+                  <td>
+                    {ligne.produit ? ligne.produit.categorie : "-"}
+                  </td>
+                  <td>
+                    {ligne.produit ? ligne.produit.prix : "-"}
+                  </td>
                   <td>{ligne.quantite}</td>
+                  <td>
+                    {ligne.produit
+                      ? (ligne.produit.prix * ligne.quantite).toFixed(2)
+                      : "-"}
+                  </td>
                 </tr>
               );
             })}
@@ -88,6 +162,62 @@ export default function OrderDetails() {
       ) : (
         <p>Aucun article</p>
       )}
+
+      <p>
+        <strong>Total:</strong> {total.toFixed(2)}
+      </p>
+
+      <Box
+        component="div"
+        sx={{
+          border: "1px solid",
+          borderColor: "divider",
+          borderRadius: 1,
+          p: 2,
+          mb: 2,
+          display: "flex",
+          alignItems: "center",
+          gap: 1,
+        }}
+      >
+        <TextField
+          select
+          label="Produit"
+          variant="outlined"
+          size="small"
+          sx={{ minWidth: 220 }}
+          value={productId}
+          onChange={function (event) {
+            setProductId(event.target.value);
+          }}
+        >
+          <MenuItem value="">Choisir un produit</MenuItem>
+
+          {products.map(function (product) {
+            return (
+              <MenuItem key={product.id} value={product.id}>
+                {product.nom}
+              </MenuItem>
+            );
+          })}
+        </TextField>
+
+        <TextField
+          label="Quantité"
+          type="number"
+          variant="outlined"
+          size="small"
+          inputProps={{ min: 1 }}
+          value={quantite}
+          onChange={function (event) {
+            setQuantite(Number(event.target.value));
+          }}
+        />
+
+        <Button variant="contained" onClick={handleAddProduct}>
+          Ajouter au produit
+        </Button>
+      </Box>
 
       <div>
         <label>Changer le statut : </label>
@@ -107,16 +237,19 @@ export default function OrderDetails() {
           })}
         </select>
 
-        <button onClick={handleChangeStatus}>Enregistrer</button>
+        <Button variant="contained" onClick={handleChangeStatus}>
+          Enregistrer
+        </Button>
       </div>
 
-      <button
+      <Button
+        variant="outlined"
         onClick={function () {
           navigate("/orders");
         }}
       >
         Back
-      </button>
+      </Button>
     </div>
   );
 }

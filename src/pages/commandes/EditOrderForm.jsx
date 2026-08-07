@@ -4,6 +4,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
+import Button from "@mui/material/Button";
+import Box from "@mui/material/Box";
+
+const STATUSES = [
+  "NOUVELLE",
+  "EN_PREPARATION",
+  "EN_ATTENTE",
+  "EXPEDIEE",
+  "LIVREE",
+];
 
 const schema = yup.object({
   statut: yup.string().required("Statut requis"),
@@ -31,7 +41,11 @@ export default function EditOrderForm() {
       api
         .get("/clients")
         .then(function (response) {
-          setClients(response.data);
+          setClients(
+            Array.isArray(response.data)
+              ? response.data
+              : (response.data && response.data.content) || []
+          );
         })
         .catch(function (error) {
           console.log("Erreur :", error);
@@ -41,6 +55,10 @@ export default function EditOrderForm() {
         .get("/orders/" + id)
         .then(function (response) {
           reset({ statut: response.data.statut });
+
+          if (response.data.client && response.data.client.id) {
+            setClientId(String(response.data.client.id));
+          }
         })
         .catch(function (error) {
           console.log("Erreur :", error);
@@ -51,7 +69,7 @@ export default function EditOrderForm() {
 
   function onSubmit(data) {
     const request = clientId
-      ? { ...data, clientId }
+      ? { ...data, client: { id: clientId } }
       : data;
 
     api
@@ -68,9 +86,19 @@ export default function EditOrderForm() {
     <div>
       <h2>Modifier la commande</h2>
 
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{
+          border: "1px solid",
+          borderColor: "divider",
+          borderRadius: 1,
+          p: 3,
+          maxWidth: 480,
+        }}
+      >
         <div>
-          <label>Client (optionnel)</label>
+          <label>Client</label>
 
           <select
             value={clientId}
@@ -94,16 +122,22 @@ export default function EditOrderForm() {
           <label>Statut</label>
 
           <select {...register("statut")}>
-            <option value="EN_ATTENTE">EN_ATTENTE</option>
-            <option value="EXPEDIEE">EXPEDIEE</option>
-            <option value="LIVREE">LIVREE</option>
+            {STATUSES.map(function (statut) {
+              return (
+                <option key={statut} value={statut}>
+                  {statut}
+                </option>
+              );
+            })}
           </select>
 
           {errors.statut && <span>{errors.statut.message}</span>}
         </div>
 
-        <button type="submit">Enregistrer</button>
-      </form>
+        <Button type="submit" variant="contained">
+          Enregistrer
+        </Button>
+      </Box>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import Button from "@mui/material/Button";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -51,21 +52,24 @@ export default function ProductDetails() {
         <strong>Stock:</strong> {product.quantiteStock}
       </p>
 
-      <button
+      <Button
+        variant="outlined"
+        color="warning"
         onClick={function () {
           navigate("/products/" + id + "/edit");
         }}
       >
         Edit
-      </button>
+      </Button>
 
-      <button
+      <Button
+        variant="outlined"
         onClick={function () {
           navigate("/products");
         }}
       >
         Back
-      </button>
+      </Button>
     </div>
   );
 }
