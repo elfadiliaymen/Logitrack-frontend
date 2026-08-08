@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
+import "./commandes.css";
 
 const STATUSES = [
   "NOUVELLE",
@@ -81,7 +82,7 @@ export default function EditOrderForm() {
   }
 
   return (
-    <div>
+    <div className="edit-order-form-page">
       <h2>Modifier la commande</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>

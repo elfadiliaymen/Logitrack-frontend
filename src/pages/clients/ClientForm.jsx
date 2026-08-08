@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import "./clients.css";
 
 const schema = yup.object({
   nom: yup.string().required("Nom requis"),
@@ -38,7 +39,7 @@ export default function ClientForm() {
   }
 
   return (
-    <div>
+    <div className="client-form-page">
       <h2>Nouveau client</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>

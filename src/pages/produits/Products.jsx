@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 import api from "../../api/api";
 import { getRole } from "../../component/token";
 import Pagination from "@mui/material/Pagination";
+import "./produits.css";
 
 const SORT_FIELDS = [
   { value: "nom,asc", label: "Nom (A-Z)" },
@@ -67,17 +72,18 @@ export default function Products() {
   }
 
   return (
-    <div>
+    <div className="products-page">
       <h2>List of products</h2>
 
-      <div>
+      <div className="toolbar">
         <button
           type="button"
+          aria-label="Créer un produit"
           onClick={function () {
             navigate("/products/new");
           }}
         >
-          +
+          <AddIcon />
         </button>
 
         <label>Catégorie</label>
@@ -132,10 +138,10 @@ export default function Products() {
       {products.length === 0 ? (
         <p>No product found</p>
       ) : (
-        <div>
+        <div className="product-grid">
           {products.map((product) => {
             return (
-              <div key={product.id}>
+              <div className="product-card" key={product.id}>
                 <p>{product.categorie}</p>
 
                 <h3>{product.nom}</h3>
@@ -144,35 +150,38 @@ export default function Products() {
 
                 <p>Price : {product.prix}</p>
 
-                <div>
+                <div className="product-actions">
                   <button
                     type="button"
+                    aria-label="Voir le produit"
                     onClick={function () {
                       navigate("/products/" + product.id);
                     }}
                   >
-                    Voir
+                    <VisibilityIcon />
                   </button>
 
                   {canEdit && (
                     <button
                       type="button"
+                      aria-label="Modifier le produit"
                       onClick={function () {
                         navigate("/products/" + product.id + "/edit");
                       }}
                     >
-                      Modifier
+                      <EditIcon />
                     </button>
                   )}
 
                   {canDelete && (
                     <button
                       type="button"
+                      aria-label="Supprimer le produit"
                       onClick={function () {
                         handleDelete(product.id);
                       }}
                     >
-                      Supprimer
+                      <DeleteIcon />
                     </button>
                   )}
                 </div>
@@ -182,7 +191,7 @@ export default function Products() {
         </div>
       )}
 
-      <div>
+      <div className="pagination-row">
         <Pagination
           count={totalPages}
           page={page + 1}

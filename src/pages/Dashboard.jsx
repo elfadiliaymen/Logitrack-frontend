@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getRole, getUser } from "../component/token";
 import api from "../api/api";
+import "./pages.css";
 
 export default function Dashboard() {
   const user = getUser();
@@ -68,7 +69,7 @@ export default function Dashboard() {
   );
 
   return (
-    <div>
+    <div className="page-dashboard">
       <h2>Tableau de bord</h2>
 
       {user && (
@@ -78,19 +79,21 @@ export default function Dashboard() {
       )}
 
       {isAdminManager && (
-        <div>
+        <div className="dashboard-section">
           <h3>Statistiques</h3>
 
-          <p>Nombre de clients : {nbClients}</p>
-          <p>Nombre de produits : {nbProduits}</p>
-          <p>Nombre de commandes : {nbCommandes}</p>
-          <p>Commandes en attente : {nbEnAttente}</p>
-          <p>Commandes expédiées : {nbExpediees}</p>
-          <p>Commandes livrées : {nbLivrees}</p>
+          <div className="dashboard-stats">
+            <p>Nombre de clients : {nbClients}</p>
+            <p>Nombre de produits : {nbProduits}</p>
+            <p>Nombre de commandes : {nbCommandes}</p>
+            <p>Commandes en attente : {nbEnAttente}</p>
+            <p>Commandes expédiées : {nbExpediees}</p>
+            <p>Commandes livrées : {nbLivrees}</p>
+          </div>
         </div>
       )}
 
-      <div>
+      <div className="dashboard-section">
         <h3>Produit le plus commandé</h3>
 
         {meilleurProduit && meilleurProduit.id ? (
@@ -104,7 +107,7 @@ export default function Dashboard() {
         )}
       </div>
 
-      <div>
+      <div className="dashboard-section">
         <h3>Produits avec un stock faible</h3>
 
         {stockFaible.length === 0 ? (
@@ -138,7 +141,7 @@ export default function Dashboard() {
         )}
       </div>
 
-      <div>
+      <div className="dashboard-section">
         <h3>Commandes récentes</h3>
 
         {commandesRecentes.length === 0 ? (

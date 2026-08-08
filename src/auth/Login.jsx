@@ -5,6 +5,7 @@ import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import api from "../api/api";
 import { saveSession } from "../component/token";
+import "./auth.css";
 
 const schema = yup.object({
   username: yup.string().required("Username requis"),
@@ -37,7 +38,7 @@ export default function Login() {
   }
 
   return (
-    <div>
+    <div className="auth-page login-page">
       <h2>Connexion</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -64,7 +65,7 @@ export default function Login() {
         </button>
       </form>
 
-      <p>
+      <p className="auth-switch">
         Pas encore de compte ?{" "}
         <button type="button" onClick={() => navigate("/register")}>
           S'inscrire

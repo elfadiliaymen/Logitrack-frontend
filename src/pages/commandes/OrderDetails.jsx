@@ -1,6 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import SaveIcon from "@mui/icons-material/Save";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import api from "../../api/api";
+import "./commandes.css";
 
 const STATUSES = [
   "NOUVELLE",
@@ -99,24 +103,26 @@ export default function OrderDetails() {
       : 0;
 
   return (
-    <div>
+    <div className="order-details-page">
       <h2>Order details</h2>
 
-      <p>
-        <strong>ID:</strong> {order.id}
-      </p>
+      <div className="details-info">
+        <p>
+          <strong>ID:</strong> {order.id}
+        </p>
 
-      <p>
-        <strong>Date:</strong> {order.dateCommande || "-"}
-      </p>
+        <p>
+          <strong>Date:</strong> {order.dateCommande || "-"}
+        </p>
 
-      <p>
-        <strong>Client:</strong> {order.client ? order.client.nom : "-"}
-      </p>
+        <p>
+          <strong>Client:</strong> {order.client ? order.client.nom : "-"}
+        </p>
 
-      <p>
-        <strong>Status:</strong> {order.statut}
-      </p>
+        <p>
+          <strong>Status:</strong> {order.statut}
+        </p>
+      </div>
 
       <h3>Articles</h3>
 
@@ -162,7 +168,7 @@ export default function OrderDetails() {
         <strong>Total:</strong> {total.toFixed(2)}
       </p>
 
-      <div>
+      <div className="order-actions">
         <label>Produit</label>
 
         <select
@@ -193,11 +199,12 @@ export default function OrderDetails() {
         />
 
         <button type="button" onClick={handleAddProduct}>
+          <AddIcon />
           Ajouter au produit
         </button>
       </div>
 
-      <div>
+      <div className="order-actions">
         <label>Changer le statut : </label>
 
         <select
@@ -216,17 +223,19 @@ export default function OrderDetails() {
         </select>
 
         <button type="button" onClick={handleChangeStatus}>
+          <SaveIcon />
           Enregistrer
         </button>
       </div>
 
       <button
         type="button"
+        aria-label="Retour à la liste des commandes"
         onClick={function () {
           navigate("/orders");
         }}
       >
-        Back
+        <ArrowBackIcon />
       </button>
     </div>
   );

@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import "./produits.css";
 
 const schema = yup.object({
   nom: yup.string().required("Nom requis"),
@@ -44,7 +45,7 @@ export default function ProductForm() {
   }
 
   return (
-    <div>
+    <div className="product-form-page">
       <h2>Nouveau produit</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>

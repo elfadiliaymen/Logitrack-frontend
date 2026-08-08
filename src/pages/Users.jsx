@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import api from "../api/api";
 import Pagination from "@mui/material/Pagination";
+import "./pages.css";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -23,7 +24,7 @@ export default function Users() {
   useEffect(loadUsers, []);
 
   return (
-    <div>
+    <div className="page-users">
       <h2>Liste des utilisateurs</h2>
 
       {users.length === 0 ? (
@@ -62,7 +63,7 @@ export default function Users() {
         </table>
       )}
 
-      <div>
+      <div className="pagination-row">
         <Pagination count={10} />
       </div>
     </div>

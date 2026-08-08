@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
+import "./produits.css";
 
 const schema = yup.object({
   nom: yup.string().required("Nom requis"),
@@ -61,7 +62,7 @@ export default function EditProductForm() {
   }
 
   return (
-    <div>
+    <div className="edit-product-form-page">
       <h2>Modifier le produit</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>

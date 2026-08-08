@@ -1,0 +1,204 @@
+/* ============================================
+   Produits pages — list / details / form / edit
+   Layout + borders only (no colors, no radius).
+   ============================================ */
+
+.products-page h2,
+.product-details-page h2,
+.product-form-page h2,
+.edit-product-form-page h2 {
+  margin-bottom: 16px;
+}
+
+/* ---------- Toolbar ---------- */
+
+.products-page .toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  border-radius: 7px;
+}
+
+.products-page .toolbar button,
+.products-page .toolbar input,
+.products-page .toolbar select {
+  padding: 8px 12px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.products-page .toolbar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.products-page .toolbar input {
+  cursor: text;
+}
+
+.products-page .toolbar label {
+  font-size: 14px;
+}
+
+/* ---------- Card grid ---------- */
+
+.products-page .product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.products-page .product-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  border-radius: 7px;
+}
+
+.products-page .product-card h3 {
+  font-size: 18px;
+}
+
+.products-page .product-card p {
+  margin: 0;
+}
+
+.products-page .product-card .product-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid #e6cda8;
+}
+
+.products-page .product-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.products-page .pagination-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+/* ---------- Details ---------- */
+
+.product-details-page .details-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 480px;
+  margin-bottom: 16px;
+  padding: 24px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  border-radius: 7px;
+}
+
+.product-details-page .details-info p {
+  margin: 0;
+}
+
+.product-details-page button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 8px;
+  padding: 8px 16px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+/* ---------- Forms ---------- */
+
+.product-form-page form,
+.edit-product-form-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 480px;
+  padding: 24px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  border-radius: 7px;
+}
+
+.product-form-page form > div,
+.edit-product-form-page form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-form-page label,
+.edit-product-form-page label {
+  font-size: 14px;
+  color: #7c6446;
+}
+
+.product-form-page input,
+.edit-product-form-page input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e6cda8;
+  background: #faf2e5;
+  color: #503c26;
+  border-radius: 7px;
+}
+
+.product-form-page span,
+.edit-product-form-page span {
+  font-size: 14px;
+}
+
+.product-form-page button,
+.edit-product-form-page button {
+  align-self: flex-start;
+  padding: 8px 16px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.products-page .toolbar button:hover,
+.products-page .product-actions button:hover,
+.product-details-page button:hover,
+.product-form-page button:hover,
+.edit-product-form-page button:hover {
+  border-color: #d97b3a;
+  background: #f9e9d3;
+}
+
+.products-page input:focus,
+.products-page select:focus,
+.product-details-page input:focus,
+.product-form-page input:focus,
+.edit-product-form-page input:focus {
+  border-color: #d97b3a;
+}

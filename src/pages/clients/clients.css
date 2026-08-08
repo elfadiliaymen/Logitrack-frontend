@@ -1,0 +1,204 @@
+/* ============================================
+   Clients pages — list / details / form / edit
+   Layout + borders only (no colors, no radius).
+   ============================================ */
+
+.clients-page h2,
+.client-details-page h2,
+.client-form-page h2,
+.edit-client-form-page h2 {
+  margin-bottom: 16px;
+}
+
+/* ---------- Toolbar ---------- */
+
+.clients-page .toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  border-radius: 7px;
+}
+
+.clients-page .toolbar button,
+.clients-page .toolbar input {
+  padding: 8px 12px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.clients-page .toolbar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clients-page .toolbar input {
+  flex: 1;
+  min-width: 220px;
+  max-width: 360px;
+  cursor: text;
+}
+
+/* ---------- Table ---------- */
+
+.clients-page table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.clients-page th,
+.clients-page td {
+  padding: 12px;
+  border: 1px solid #e6cda8;
+  text-align: left;
+}
+
+.clients-page th {
+  background: #f3e3cd;
+  color: #503c26;
+}
+
+.clients-page tbody tr:nth-child(even) {
+  background: #faf2e5;
+}
+
+.clients-page th button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.clients-page td button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  padding: 4px 12px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.clients-page .pagination-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+/* ---------- Details ---------- */
+
+.client-details-page .details-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 480px;
+  margin-bottom: 16px;
+  padding: 24px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  border-radius: 7px;
+}
+
+.client-details-page .details-info p {
+  margin: 0;
+}
+
+.client-details-page button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+/* ---------- Forms ---------- */
+
+.client-form-page form,
+.edit-client-form-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 480px;
+  padding: 24px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  border-radius: 7px;
+}
+
+.client-form-page form > div,
+.edit-client-form-page form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.client-form-page label,
+.edit-client-form-page label {
+  font-size: 14px;
+  color: #7c6446;
+}
+
+.client-form-page input,
+.edit-client-form-page input,
+.client-form-page select,
+.edit-client-form-page select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e6cda8;
+  background: #faf2e5;
+  color: #503c26;
+  border-radius: 7px;
+}
+
+.client-form-page span,
+.edit-client-form-page span {
+  font-size: 14px;
+}
+
+.client-form-page button,
+.edit-client-form-page button {
+  align-self: flex-start;
+  padding: 8px 16px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.clients-page .toolbar button:hover,
+.clients-page td button:hover,
+.client-details-page button:hover,
+.client-form-page button:hover,
+.edit-client-form-page button:hover {
+  border-color: #d97b3a;
+  background: #f9e9d3;
+}
+
+.clients-page input:focus,
+.client-details-page input:focus,
+.client-form-page input:focus,
+.client-form-page select:focus,
+.edit-client-form-page input:focus,
+.edit-client-form-page select:focus {
+  border-color: #d97b3a;
+}

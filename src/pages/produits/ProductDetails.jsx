@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import EditIcon from "@mui/icons-material/Edit";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import api from "../../api/api";
+import "./produits.css";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -28,45 +31,49 @@ export default function ProductDetails() {
   }
 
   return (
-    <div>
+    <div className="product-details-page">
       <h2>Product details</h2>
 
-      <p>
-        <strong>ID:</strong> {product.id}
-      </p>
+      <div className="details-info">
+        <p>
+          <strong>ID:</strong> {product.id}
+        </p>
 
-      <p>
-        <strong>Name:</strong> {product.nom}
-      </p>
+        <p>
+          <strong>Name:</strong> {product.nom}
+        </p>
 
-      <p>
-        <strong>Category:</strong> {product.categorie}
-      </p>
+        <p>
+          <strong>Category:</strong> {product.categorie}
+        </p>
 
-      <p>
-        <strong>Price:</strong> {product.prix}
-      </p>
+        <p>
+          <strong>Price:</strong> {product.prix}
+        </p>
 
-      <p>
-        <strong>Stock:</strong> {product.quantiteStock}
-      </p>
+        <p>
+          <strong>Stock:</strong> {product.quantiteStock}
+        </p>
+      </div>
 
       <button
         type="button"
+        aria-label="Modifier le produit"
         onClick={function () {
           navigate("/products/" + id + "/edit");
         }}
       >
-        Edit
+        <EditIcon />
       </button>
 
       <button
         type="button"
+        aria-label="Retour à la liste des produits"
         onClick={function () {
           navigate("/products");
         }}
       >
-        Back
+        <ArrowBackIcon />
       </button>
     </div>
   );

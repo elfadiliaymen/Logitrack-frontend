@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
+import "./commandes.css";
 
 const schema = yup.object({
   clientId: yup.string().required("Client requis"),
@@ -56,7 +57,7 @@ export default function OrderForm() {
   }
 
   return (
-    <div>
+    <div className="order-form-page">
       <h2>Nouvelle commande</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>

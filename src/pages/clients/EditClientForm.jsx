@@ -4,6 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
+import "./clients.css";
 
 const schema = yup.object({
   nom: yup.string().required("Nom requis"),
@@ -55,7 +56,7 @@ export default function EditClientForm() {
   }
 
   return (
-    <div>
+    <div className="edit-client-form-page">
       <h2>Modifier le client</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>

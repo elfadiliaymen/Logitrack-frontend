@@ -31,15 +31,15 @@ function App() {
   const [navOpen, setNavOpen] = useState(true);
 
   return (
-    <div>
+    <div className="app">
       <Header
         onToggleMenu={function () {
           setNavOpen(!navOpen);
         }}
       />
-      <div>
+      <div className={"app-layout" + (navOpen ? " nav-open" : "")}>
         <NavBar open={navOpen} />
-        <main>
+        <main className="app-main">
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

@@ -1,0 +1,78 @@
+/* ============================================
+   Auth pages — Login / Register
+   Layout + borders only (no colors, no radius).
+   ============================================ */
+
+.auth-page {
+  display: flex;
+  justify-content: center;
+  padding: 48px 16px;
+}
+
+.auth-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 420px;
+  padding: 32px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  border-radius: 7px;
+}
+
+.auth-page form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.auth-page label {
+  font-size: 14px;
+  color: #7c6446;
+}
+
+.auth-page input,
+.auth-page select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e6cda8;
+  background: #faf2e5;
+  color: #503c26;
+  border-radius: 7px;
+}
+
+.auth-page span {
+  font-size: 14px;
+}
+
+.auth-page button {
+  padding: 12px 16px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.auth-page button:hover {
+  border-color: #d97b3a;
+  background: #f9e9d3;
+}
+
+.auth-page input:focus,
+.auth-page select:focus {
+  border-color: #d97b3a;
+}
+
+.auth-page .auth-switch {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid #e6cda8;
+}

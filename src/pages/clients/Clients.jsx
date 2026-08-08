@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import api from "../../api/api";
 import { getRole } from "../../component/token";
 import Pagination from "@mui/material/Pagination";
+import "./clients.css";
 
 export default function Clients() {
   const [clients, setClients] = useState([]);
@@ -59,17 +66,18 @@ export default function Clients() {
   }
 
   return (
-    <div>
+    <div className="clients-page">
       <h2>List of clients</h2>
 
-      <div>
+      <div className="toolbar">
         <button
           type="button"
+          aria-label="Ajouter un client"
           onClick={function () {
             navigate("/clients/new");
           }}
         >
-          +
+          <AddIcon />
         </button>
 
         <input
@@ -96,7 +104,7 @@ export default function Clients() {
                   type="button"
                   onClick={handleSort}
                 >
-                  Name {sortDir === "asc" ? "▲" : "▼"}
+                  Name {sortDir === "asc" ? <ArrowUpwardIcon fontSize="small" /> : <ArrowDownwardIcon fontSize="small" />}
                 </button>
               </th>
 
@@ -127,32 +135,35 @@ export default function Clients() {
                   <td>
                     <button
                       type="button"
+                      aria-label="Voir le client"
                       onClick={function () {
                         navigate("/clients/" + client.id);
                       }}
                     >
-                      View
+                      <VisibilityIcon />
                     </button>
 
                     {canEdit && (
                       <button
                         type="button"
+                        aria-label="Modifier le client"
                         onClick={function () {
                           navigate("/clients/" + client.id + "/edit");
                         }}
                       >
-                        Edit
+                        <EditIcon />
                       </button>
                     )}
 
                     {canDelete && (
                       <button
                         type="button"
+                        aria-label="Supprimer le client"
                         onClick={function () {
                           handleDelete(client.id);
                         }}
                       >
-                        Delete
+                        <DeleteIcon />
                       </button>
                     )}
                   </td>
@@ -163,7 +174,7 @@ export default function Clients() {
         </table>
       )}
 
-      <div>
+      <div className="pagination-row">
         <Pagination
           count={totalPages}
           page={page + 1}

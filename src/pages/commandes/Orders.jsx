@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AddIcon from "@mui/icons-material/Add";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
+import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import api from "../../api/api";
 import { getRole } from "../../component/token";
 import Pagination from "@mui/material/Pagination";
+import "./commandes.css";
 
 const STATUSES = [
   "NOUVELLE",
@@ -84,23 +91,28 @@ export default function Orders() {
   }
 
   function sortArrow(field) {
-    if (sortBy !== field) return "";
+    if (sortBy !== field) return null;
 
-    return sortDir === "asc" ? "▲" : "▼";
+    return sortDir === "asc" ? (
+      <ArrowUpwardIcon fontSize="small" />
+    ) : (
+      <ArrowDownwardIcon fontSize="small" />
+    );
   }
 
   return (
-    <div>
+    <div className="orders-page">
       <h2>List of orders</h2>
 
-      <div>
+      <div className="toolbar">
         <button
           type="button"
+          aria-label="Créer une commande"
           onClick={function () {
             navigate("/orders/new");
           }}
         >
-          +
+          <AddIcon />
         </button>
 
         <label>Rechercher par client : </label>
@@ -210,32 +222,35 @@ export default function Orders() {
                   <td>
                     <button
                       type="button"
+                      aria-label="Voir la commande"
                       onClick={function () {
                         navigate("/orders/" + order.id);
                       }}
                     >
-                      View
+                      <VisibilityIcon />
                     </button>
 
                     {canEdit && (
                       <button
                         type="button"
+                        aria-label="Modifier la commande"
                         onClick={function () {
                           navigate("/orders/" + order.id + "/edit");
                         }}
                       >
-                        Edit
+                        <EditIcon />
                       </button>
                     )}
 
                     {canDelete && (
                       <button
                         type="button"
+                        aria-label="Supprimer la commande"
                         onClick={function () {
                           handleDelete(order.id);
                         }}
                       >
-                        Delete
+                        <DeleteIcon />
                       </button>
                     )}
                   </td>
@@ -246,7 +261,7 @@ export default function Orders() {
         </table>
       )}
 
-      <div>
+      <div className="pagination-row">
         <Pagination
           count={totalPages}
           page={page + 1}
