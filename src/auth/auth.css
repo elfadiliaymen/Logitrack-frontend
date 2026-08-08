@@ -1,12 +1,15 @@
-/* ============================================
-   Auth pages — Login / Register
-   Layout + borders only (no colors, no radius).
-   ============================================ */
-
 .auth-page {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
   padding: 48px 16px;
+}
+
+.auth-page h2 {
+  margin: 0 0 24px;
+  font-size: 24px;
+  color: #503c26;
 }
 
 .auth-page form {
@@ -42,11 +45,18 @@
   border-radius: 7px;
 }
 
-.auth-page span {
-  font-size: 14px;
+.auth-page input:focus,
+.auth-page select:focus {
+  border-color: #d97b3a;
 }
 
-.auth-page button {
+.auth-page span {
+  font-size: 14px;
+  color: #b3482a;
+}
+
+.auth-page button[type="submit"] {
+  width: 100%;
   padding: 12px 16px;
   border: 1px solid #e6cda8;
   background: #fffdf7;
@@ -55,24 +65,37 @@
   border-radius: 7px;
 }
 
-.auth-page button:hover {
+.auth-page button[type="submit"]:hover {
   border-color: #d97b3a;
   background: #f9e9d3;
 }
 
-.auth-page input:focus,
-.auth-page select:focus {
-  border-color: #d97b3a;
-}
-
 .auth-page .auth-switch {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
   gap: 8px;
+  width: 100%;
+  max-width: 420px;
   margin-top: 16px;
   padding-top: 16px;
   border-top: 1px solid #e6cda8;
+}
+
+.auth-page .auth-switch button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: #d97b3a;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+  border-radius: 0;
+}
+
+.auth-page .auth-switch button:hover {
+  background: none;
+  border: none;
+  color: #a55c1f;
 }
