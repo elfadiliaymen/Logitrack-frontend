@@ -11,7 +11,7 @@ const schema = yup.object({
   statut: yup.string().required("Statut requis"),
 });
 
-export default function OrderForm() {
+ function OrderForm() {
   const navigate = useNavigate();
 
   const [clients, setClients] = useState([]);
@@ -31,14 +31,14 @@ export default function OrderForm() {
     function () {
       api
         .get("/clients")
-        .then(function (response) {
+        .then((response) => {
           setClients(
             Array.isArray(response.data)
               ? response.data
               : (response.data && response.data.content) || []
           );
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log("Erreur :", error);
         });
     },
@@ -48,10 +48,10 @@ export default function OrderForm() {
   function onSubmit(data) {
     api
       .post("/orders", data)
-      .then(function (response) {
+      .then((response) => {
         navigate("/orders/" + response.data.id);
       })
-      .catch(function (error) {
+      .catch((error) =>  {
         console.log("Erreur :", error);
       });
   }
@@ -67,7 +67,7 @@ export default function OrderForm() {
           <select {...register("clientId")}>
             <option value="">Choisir un client</option>
 
-            {clients.map(function (client) {
+            {clients.map((client) => {
               return (
                 <option key={client.id} value={client.id}>
                   {client.nom}
@@ -96,3 +96,5 @@ export default function OrderForm() {
     </div>
   );
 }
+
+export default OrderForm;

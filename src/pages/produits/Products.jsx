@@ -47,11 +47,11 @@ export default function Products() {
           stockFaible: lowStock || undefined,
         },
       })
-      .then(function (response) {
+      .then((response) => {
         setProducts(response.data.content || []);
         setTotalPages(response.data.totalPages || 1);
       })
-      .catch(function (error) {
+      .catch((error) =>  {
         console.log("Erreur :", error);
       });
   }
@@ -66,7 +66,7 @@ export default function Products() {
     api
       .delete("/products/" + productId)
       .then(loadProducts)
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -79,7 +79,7 @@ export default function Products() {
         <button
           type="button"
           aria-label="Créer un produit"
-          onClick={function () {
+          onClick={() => {
             navigate("/products/new");
           }}
         >
@@ -90,7 +90,7 @@ export default function Products() {
         <input
           type="text"
           value={category}
-          onChange={function (event) {
+          onChange={(event) => {
             setCategory(event.target.value);
             setPage(0);
           }}
@@ -100,7 +100,7 @@ export default function Products() {
         <input
           type="number"
           value={prix}
-          onChange={function (event) {
+          onChange={(event) => {
             setPrix(event.target.value);
             setPage(0);
           }}
@@ -108,7 +108,7 @@ export default function Products() {
 
         <button
           type="button"
-          onClick={function () {
+          onClick={() => {
             setLowStock(!lowStock);
             setPage(0);
           }}
@@ -120,12 +120,12 @@ export default function Products() {
 
         <select
           value={sort}
-          onChange={function (event) {
+          onChange={(event) => {
             setSort(event.target.value);
             setPage(0);
           }}
         >
-          {SORT_FIELDS.map(function (item) {
+          {SORT_FIELDS.map((item) => {
             return (
               <option key={item.value} value={item.value}>
                 {item.label}
@@ -154,7 +154,7 @@ export default function Products() {
                   <button
                     type="button"
                     aria-label="Voir le produit"
-                    onClick={function () {
+                    onClick={() =>  {
                       navigate("/products/" + product.id);
                     }}
                   >
@@ -165,7 +165,7 @@ export default function Products() {
                     <button
                       type="button"
                       aria-label="Modifier le produit"
-                      onClick={function () {
+                      onClick={() => {
                         navigate("/products/" + product.id + "/edit");
                       }}
                     >
@@ -177,7 +177,7 @@ export default function Products() {
                     <button
                       type="button"
                       aria-label="Supprimer le produit"
-                      onClick={function () {
+                      onClick={() =>  {
                         handleDelete(product.id);
                       }}
                     >
@@ -195,7 +195,7 @@ export default function Products() {
         <Pagination
           count={totalPages}
           page={page + 1}
-          onChange={function (event, value) {
+          onChange={(event, value) => {
             setPage(value - 1);
           }}
         />

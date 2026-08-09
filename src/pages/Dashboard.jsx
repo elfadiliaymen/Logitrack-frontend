@@ -35,33 +35,33 @@ export default function Dashboard() {
   useEffect(
     function () {
       if (isAdminManager) {
-        api.get("/dashboard/clients/count").then(function (res) {
+        api.get("/dashboard/clients/count").then((res) => {
           setNbClients(res.data);
         });
-        api.get("/dashboard/products/count").then(function (res) {
+        api.get("/dashboard/products/count").then((res) => {
           setNbProduits(res.data);
         });
-        api.get("/dashboard/orders/count").then(function (res) {
+        api.get("/dashboard/orders/count").then((res) => {
           setNbCommandes(res.data);
         });
-        api.get("/dashboard/orders/count/NOUVELLE").then(function (res) {
+        api.get("/dashboard/orders/count/NOUVELLE").then((res) => {
           setNbEnAttente(res.data);
         });
-        api.get("/dashboard/orders/count/EXPEDIEE").then(function (res) {
+        api.get("/dashboard/orders/count/EXPEDIEE").then((res) => {
           setNbExpediees(res.data);
         });
-        api.get("/dashboard/orders/count/LIVREE").then(function (res) {
+        api.get("/dashboard/orders/count/LIVREE").then((res) => {
           setNbLivrees(res.data);
         });
       }
 
-      api.get("/dashboard/products/low-stock").then(function (res) {
+      api.get("/dashboard/products/low-stock").then((res) => {
         setStockFaible(getList(res.data));
       });
-      api.get("/dashboard/products/top-product").then(function (res) {
+      api.get("/dashboard/products/top-product").then((res) => {
         setMeilleurProduit(res.data);
       });
-      api.get("/dashboard/orders/recent").then(function (res) {
+      api.get("/dashboard/orders/recent").then((res) => {
         setCommandesRecentes(getList(res.data));
       });
     },
@@ -125,7 +125,7 @@ export default function Dashboard() {
             </thead>
 
             <tbody>
-              {stockFaible.map(function (produit) {
+              {stockFaible.map((produit) =>{
                 return (
                   <tr key={produit.id}>
                     <td>{produit.id}</td>
@@ -158,7 +158,7 @@ export default function Dashboard() {
             </thead>
 
             <tbody>
-              {commandesRecentes.map(function (commande) {
+              {commandesRecentes.map((commande) => {
                 return (
                   <tr key={commande.id}>
                     <td>{commande.id}</td>

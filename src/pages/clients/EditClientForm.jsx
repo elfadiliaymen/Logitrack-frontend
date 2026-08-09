@@ -16,7 +16,7 @@ const schema = yup.object({
   ville: yup.string().required("Ville requise"),
 });
 
-export default function EditClientForm() {
+function EditClientForm() {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -47,10 +47,10 @@ export default function EditClientForm() {
   function onSubmit(data) {
     api
       .put("/clients/" + id, data)
-      .then(function () {
+      .then(() => {
         navigate("/clients");
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -95,3 +95,5 @@ export default function EditClientForm() {
     </div>
   );
 }
+
+export default EditClientForm;

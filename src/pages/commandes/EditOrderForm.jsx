@@ -18,7 +18,7 @@ const schema = yup.object({
   statut: yup.string().required("Statut requis"),
 });
 
-export default function EditOrderForm() {
+function EditOrderForm() {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -46,20 +46,20 @@ export default function EditOrderForm() {
               : (response.data && response.data.content) || []
           );
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log("Erreur :", error);
         });
 
       api
         .get("/orders/" + id)
-        .then(function (response) {
+        .then((response) => {
           reset({ statut: response.data.statut });
 
           if (response.data.client && response.data.client.id) {
             setClientId(String(response.data.client.id));
           }
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log("Erreur :", error);
         });
     },
@@ -73,10 +73,10 @@ export default function EditOrderForm() {
 
     api
       .put("/orders/" + id, request)
-      .then(function () {
+      .then(() => {
         navigate("/orders");
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -91,13 +91,13 @@ export default function EditOrderForm() {
 
           <select
             value={clientId}
-            onChange={function (event) {
+            onChange={(event) => {
               setClientId(event.target.value);
             }}
           >
             <option value="">Conserver le client actuel</option>
 
-            {clients.map(function (client) {
+            {clients.map((client) => {
               return (
                 <option key={client.id} value={client.id}>
                   {client.nom}
@@ -111,7 +111,7 @@ export default function EditOrderForm() {
           <label>Statut</label>
 
           <select {...register("statut")}>
-            {STATUSES.map(function (statut) {
+            {STATUSES.map((statut) => {
               return (
                 <option key={statut} value={statut}>
                   {statut}
@@ -128,3 +128,5 @@ export default function EditOrderForm() {
     </div>
   );
 }
+
+export default EditOrderForm;

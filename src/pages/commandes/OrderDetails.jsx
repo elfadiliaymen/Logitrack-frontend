@@ -29,24 +29,24 @@ export default function OrderDetails() {
     function () {
       api
         .get("/orders/" + id)
-        .then(function (response) {
+        .then((response) => {
           setOrder(response.data);
           setStatut(response.data.statut);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log("Erreur :", error);
         });
 
       api
         .get("/products")
-        .then(function (response) {
+        .then((response) => {
           setProducts(
             Array.isArray(response.data)
               ? response.data
               : (response.data && response.data.content) || []
           );
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log("Erreur :", error);
         });
     },
@@ -56,11 +56,11 @@ export default function OrderDetails() {
   function handleChangeStatus() {
     api
       .put("/orders/" + id + "/status", statut)
-      .then(function (response) {
+      .then((response) => {
         setOrder(response.data);
         setStatut(response.data.statut);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -75,15 +75,15 @@ export default function OrderDetails() {
         produit: { id: productId },
         quantite: quantite,
       })
-      .then(function () {
+      .then(() => {
         return api.get("/orders/" + id);
       })
-      .then(function (response) {
+      .then((response) => {
         setOrder(response.data);
         setProductId("");
         setQuantite(1);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -94,7 +94,7 @@ export default function OrderDetails() {
 
   const total =
     order.ligneCommandes && order.ligneCommandes.length > 0
-      ? order.ligneCommandes.reduce(function (sum, ligne) {
+      ? order.ligneCommandes.reduce((sum, ligne) => {
           return (
             sum +
             (ligne.produit ? ligne.produit.prix : 0) * ligne.quantite
@@ -140,7 +140,7 @@ export default function OrderDetails() {
           </thead>
 
           <tbody>
-            {order.ligneCommandes.map(function (ligne) {
+            {order.ligneCommandes.map((ligne) => {
               return (
                 <tr key={ligne.id}>
                   <td>{ligne.id}</td>
@@ -173,13 +173,13 @@ export default function OrderDetails() {
 
         <select
           value={productId}
-          onChange={function (event) {
+          onChange={(event) => {
             setProductId(event.target.value);
           }}
         >
           <option value="">Choisir un produit</option>
 
-          {products.map(function (product) {
+          {products.map((product) => {
             return (
               <option key={product.id} value={product.id}>
                 {product.nom}
@@ -193,7 +193,7 @@ export default function OrderDetails() {
           type="number"
           min="1"
           value={quantite}
-          onChange={function (event) {
+          onChange={(event) => {
             setQuantite(Number(event.target.value));
           }}
         />
@@ -209,11 +209,11 @@ export default function OrderDetails() {
 
         <select
           value={statut}
-          onChange={function (event) {
+          onChange={(event) => {
             setStatut(event.target.value);
           }}
         >
-          {STATUSES.map(function (statut) {
+          {STATUSES.map((statut) => {
             return (
               <option key={statut} value={statut}>
                 {statut}
@@ -231,7 +231,7 @@ export default function OrderDetails() {
       <button
         type="button"
         aria-label="Retour à la liste des commandes"
-        onClick={function () {
+        onClick={() => {
           navigate("/orders");
         }}
       >

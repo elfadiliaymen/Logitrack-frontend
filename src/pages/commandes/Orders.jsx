@@ -19,7 +19,7 @@ const STATUSES = [
   "LIVREE",
 ];
 
-export default function Orders() {
+ function Orders() {
   const [orders, setOrders] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -47,11 +47,11 @@ export default function Orders() {
           clientNom: clientNom || undefined,
         },
       })
-      .then(function (response) {
+      .then((response) => {
         setOrders(response.data.content || []);
         setTotalPages(response.data.totalPages || 1);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -72,7 +72,7 @@ export default function Orders() {
     api
       .put("/orders/" + order.id + "/status", statut)
       .then(loadOrders)
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -85,7 +85,7 @@ export default function Orders() {
     api
       .delete("/orders/" + orderId)
       .then(loadOrders)
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -108,7 +108,7 @@ export default function Orders() {
         <button
           type="button"
           aria-label="Créer une commande"
-          onClick={function () {
+          onClick={() => {
             navigate("/orders/new");
           }}
         >
@@ -121,7 +121,7 @@ export default function Orders() {
           type="text"
           placeholder="Nom du client"
           value={clientNom}
-          onChange={function (event) {
+          onChange={(event) => {
             setClientNom(event.target.value);
             setPage(0);
           }}
@@ -131,14 +131,14 @@ export default function Orders() {
 
         <select
           value={filter}
-          onChange={function (event) {
+          onChange={(event) => {
             setFilter(event.target.value);
             setPage(0);
           }}
         >
           <option value="">Tous</option>
 
-          {STATUSES.map(function (statut) {
+          {STATUSES.map((statut) => {
             return (
               <option key={statut} value={statut}>
                 {statut}
@@ -163,7 +163,7 @@ export default function Orders() {
               <th>
                 <button
                   type="button"
-                  onClick={function () {
+                  onClick={() => {
                     handleSort("dateCommande");
                   }}
                 >
@@ -174,7 +174,7 @@ export default function Orders() {
               <th>
                 <button
                   type="button"
-                  onClick={function () {
+                  onClick={() =>  {
                     handleSort("statut");
                   }}
                 >
@@ -187,7 +187,7 @@ export default function Orders() {
           </thead>
 
           <tbody>
-            {orders.map(function (order) {
+            {orders.map((order) => {
               return (
                 <tr key={order.id}>
                   <td>{order.id}</td>
@@ -205,11 +205,11 @@ export default function Orders() {
                   <td>
                     <select
                       value={order.statut}
-                      onChange={function (event) {
+                      onChange={(event) => {
                         handleChangeStatus(order, event.target.value);
                       }}
                     >
-                      {STATUSES.map(function (statut) {
+                      {STATUSES.map((statut) => {
                         return (
                           <option key={statut} value={statut}>
                             {statut}
@@ -223,7 +223,7 @@ export default function Orders() {
                     <button
                       type="button"
                       aria-label="Voir la commande"
-                      onClick={function () {
+                      onClick={() => {
                         navigate("/orders/" + order.id);
                       }}
                     >
@@ -234,7 +234,7 @@ export default function Orders() {
                       <button
                         type="button"
                         aria-label="Modifier la commande"
-                        onClick={function () {
+                        onClick={() => {
                           navigate("/orders/" + order.id + "/edit");
                         }}
                       >
@@ -246,7 +246,7 @@ export default function Orders() {
                       <button
                         type="button"
                         aria-label="Supprimer la commande"
-                        onClick={function () {
+                        onClick={() => {
                           handleDelete(order.id);
                         }}
                       >
@@ -265,7 +265,7 @@ export default function Orders() {
         <Pagination
           count={totalPages}
           page={page + 1}
-          onChange={function (event, value) {
+          onChange={(event, value) => {
             setPage(value - 1);
           }}
         />
@@ -273,3 +273,5 @@ export default function Orders() {
     </div>
   );
 }
+
+export default Orders;

@@ -36,11 +36,11 @@ export default function Clients() {
           nom: search || undefined,
         },
       })
-      .then(function (response) {
+      .then((response)=> {
         setClients(response.data.content || []);
         setTotalPages(response.data.totalPages || 1);
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -60,7 +60,7 @@ export default function Clients() {
     api
       .delete("/clients/" + clientId)
       .then(loadClients)
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -73,7 +73,7 @@ export default function Clients() {
         <button
           type="button"
           aria-label="Ajouter un client"
-          onClick={function () {
+          onClick={() => {
             navigate("/clients/new");
           }}
         >
@@ -84,7 +84,7 @@ export default function Clients() {
           type="text"
           placeholder="Rechercher par nom"
           value={search}
-          onChange={function (event) {
+          onChange={(event) => {
             setSearch(event.target.value);
             setPage(0);
           }}
@@ -136,7 +136,7 @@ export default function Clients() {
                     <button
                       type="button"
                       aria-label="Voir le client"
-                      onClick={function () {
+                      onClick={() => {
                         navigate("/clients/" + client.id);
                       }}
                     >
@@ -147,7 +147,7 @@ export default function Clients() {
                       <button
                         type="button"
                         aria-label="Modifier le client"
-                        onClick={function () {
+                        onClick={() => {
                           navigate("/clients/" + client.id + "/edit");
                         }}
                       >
@@ -159,7 +159,7 @@ export default function Clients() {
                       <button
                         type="button"
                         aria-label="Supprimer le client"
-                        onClick={function () {
+                        onClick={() => {
                           handleDelete(client.id);
                         }}
                       >
@@ -178,7 +178,7 @@ export default function Clients() {
         <Pagination
           count={totalPages}
           page={page + 1}
-          onChange={function (event, value) {
+          onChange={(event, value) => {
             setPage(value - 1);
           }}
         />

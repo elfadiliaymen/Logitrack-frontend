@@ -33,7 +33,7 @@ function App() {
   return (
     <div className="app">
       <Header
-        onToggleMenu={function () {
+        onToggleMenu={() => {
           setNavOpen(!navOpen);
         }}
       />

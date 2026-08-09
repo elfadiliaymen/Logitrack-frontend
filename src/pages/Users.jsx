@@ -16,7 +16,7 @@ export default function Users() {
             : (response.data && response.data.content) || []
         );
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -42,7 +42,7 @@ export default function Users() {
           </thead>
 
           <tbody>
-            {users.map(function (user) {
+            {users.map((user) => {
               return (
                 <tr key={user.id}>
                   <td>{user.id}</td>

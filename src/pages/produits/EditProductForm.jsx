@@ -22,7 +22,7 @@ const schema = yup.object({
     .required("Quantité requise"),
 });
 
-export default function EditProductForm() {
+ function EditProductForm() {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -40,10 +40,10 @@ export default function EditProductForm() {
     function () {
       api
         .get("/products/" + id)
-        .then(function (response) {
+        .then((response) => {
           reset(response.data);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log("Erreur :", error);
         });
     },
@@ -53,10 +53,10 @@ export default function EditProductForm() {
   function onSubmit(data) {
     api
       .put("/products/" + id, data)
-      .then(function () {
+      .then(() => {
         navigate("/products");
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -103,3 +103,5 @@ export default function EditProductForm() {
     </div>
   );
 }
+
+export default EditProductForm;

@@ -5,7 +5,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import api from "../../api/api";
 import "./produits.css";
 
-export default function ProductDetails() {
+function ProductDetails() {
   const { id } = useParams();
 
   const navigate = useNavigate();
@@ -16,10 +16,10 @@ export default function ProductDetails() {
     function () {
       api
         .get("/products/" + id)
-        .then(function (response) {
+        .then((response) => {
           setProduct(response.data);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log("Erreur :", error);
         });
     },
@@ -59,7 +59,7 @@ export default function ProductDetails() {
       <button
         type="button"
         aria-label="Modifier le produit"
-        onClick={function () {
+        onClick={() => {
           navigate("/products/" + id + "/edit");
         }}
       >
@@ -69,7 +69,7 @@ export default function ProductDetails() {
       <button
         type="button"
         aria-label="Retour à la liste des produits"
-        onClick={function () {
+        onClick={() => {
           navigate("/products");
         }}
       >
@@ -78,3 +78,5 @@ export default function ProductDetails() {
     </div>
   );
 }
+
+export default ProductDetails;

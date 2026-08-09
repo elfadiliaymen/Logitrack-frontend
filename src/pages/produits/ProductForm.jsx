@@ -22,7 +22,7 @@ const schema = yup.object({
     .required("Quantité requise"),
 });
 
-export default function ProductForm() {
+function ProductForm() {
   const navigate = useNavigate();
 
   const {
@@ -36,10 +36,10 @@ export default function ProductForm() {
   function onSubmit(data) {
     api
       .post("/products", data)
-      .then(function () {
+      .then(() => {
         navigate("/products");
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log("Erreur :", error);
       });
   }
@@ -86,3 +86,5 @@ export default function ProductForm() {
     </div>
   );
 }
+
+export default ProductForm;

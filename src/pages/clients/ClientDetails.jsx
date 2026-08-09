@@ -15,10 +15,10 @@ export default function ClientDetails() {
     function () {
       api
         .get("/clients/" + id)
-        .then(function (response) {
+        .then((response) => {
           setClient(response.data);
         })
-        .catch(function (error) {
+        .catch((error) => {
           console.log("Erreur :", error);
         });
     },
@@ -58,7 +58,7 @@ export default function ClientDetails() {
       <button
         type="button"
         aria-label="Retour à la liste des clients"
-        onClick={function () {
+        onClick={() => {
           navigate("/clients");
         }}
       >
