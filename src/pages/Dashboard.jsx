@@ -7,8 +7,10 @@ export default function Dashboard() {
   const user = getUser();
   const role = getRole();
 
-  const isAdminManager = role === "ADMIN" || role === "MANAGER";
+  const isAdmin = role === "ADMIN";
+  const isAdminManager = isAdmin || role === "MANAGER";
 
+  const [nbUsers, setNbUsers] = useState(0);
   const [nbClients, setNbClients] = useState(0);
   const [nbProduits, setNbProduits] = useState(0);
   const [nbCommandes, setNbCommandes] = useState(0);
@@ -50,22 +52,28 @@ export default function Dashboard() {
         api.get("/dashboard/orders/count/EXPEDIEE").then((res) => {
           setNbExpediees(res.data);
         });
-        api.get("/dashboard/orders/count/LIVREE").then((res) => {
+        api.get("/dashboard/orders/count/LIVREE").then((res) =>{
           setNbLivrees(res.data);
+        });
+        api.get("/dashboard/products/top-product").then( (res) => {
+          setMeilleurProduit(res.data);
         });
       }
 
-      api.get("/dashboard/products/low-stock").then((res) => {
+      if (isAdmin) {
+        api.get("/users").then((res) => {
+          setNbUsers(getList(res.data).length);
+        });
+      }
+
+      api.get("/dashboard/products/low-stock").then(function (res) {
         setStockFaible(getList(res.data));
       });
-      api.get("/dashboard/products/top-product").then((res) => {
-        setMeilleurProduit(res.data);
-      });
-      api.get("/dashboard/orders/recent").then((res) => {
+      api.get("/dashboard/orders/recent").then(function (res) {
         setCommandesRecentes(getList(res.data));
       });
     },
-    [isAdminManager]
+    [isAdminManager, isAdmin]
   );
 
   return (
@@ -83,6 +91,7 @@ export default function Dashboard() {
           <h3>Statistiques</h3>
 
           <div className="dashboard-stats">
+            {isAdmin && <p>Nombre d'utilisateurs : {nbUsers}</p>}
             <p>Nombre de clients : {nbClients}</p>
             <p>Nombre de produits : {nbProduits}</p>
             <p>Nombre de commandes : {nbCommandes}</p>
@@ -93,19 +102,21 @@ export default function Dashboard() {
         </div>
       )}
 
-      <div className="dashboard-section">
-        <h3>Produit le plus commandé</h3>
+      {isAdminManager && (
+        <div className="dashboard-section">
+          <h3>Produit le plus commandé</h3>
 
-        {meilleurProduit && meilleurProduit.id ? (
-          <p>
-            {meilleurProduit.nom} — {meilleurProduit.categorie} —
-            Stock : {meilleurProduit.quantiteStock} — Prix :{" "}
-            {meilleurProduit.prix}
-          </p>
-        ) : (
-          <p>Aucun produit commandé</p>
-        )}
-      </div>
+          {meilleurProduit && meilleurProduit.id ? (
+            <p>
+              {meilleurProduit.nom} — {meilleurProduit.categorie} —
+              Stock : {meilleurProduit.quantiteStock} — Prix :{" "}
+              {meilleurProduit.prix}
+            </p>
+          ) : (
+            <p>Aucun produit commandé</p>
+          )}
+        </div>
+      )}
 
       <div className="dashboard-section">
         <h3>Produits avec un stock faible</h3>
@@ -125,7 +136,7 @@ export default function Dashboard() {
             </thead>
 
             <tbody>
-              {stockFaible.map((produit) =>{
+              {stockFaible.map((produit) => {
                 return (
                   <tr key={produit.id}>
                     <td>{produit.id}</td>

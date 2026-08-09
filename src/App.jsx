@@ -20,6 +20,7 @@ import Profile from "./pages/Profile";
 import RouteGuard from "./component/RouteGuard";
 import RoleGuard from "./component/RoleGuard";
 import AccessDenied from "./component/AccessDenied";
+import NotFound from "./component/NotFound";
 import NavBar from "./component/NavBar";
 import Header from "./component/Header";
 import Footer from "./component/Footer";
@@ -44,6 +45,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/access-denied" element={<AccessDenied />} />
+
+          <Route path="*" element={<NotFound />} />
 
           <Route
             path="/"

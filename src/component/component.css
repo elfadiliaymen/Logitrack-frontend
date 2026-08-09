@@ -53,7 +53,8 @@
 
 .app-header button:hover,
 .app-nav a:hover,
-.access-denied-page a:hover {
+.access-denied-page a:hover,
+.not-found-page a:hover {
   border-color: #d97b3a;
   background: #f9e9d3;
 }
@@ -102,7 +103,8 @@
   border-radius: 7px;
 }
 
-.access-denied-page {
+.access-denied-page,
+.not-found-page {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -113,11 +115,13 @@
   text-align: center;
 }
 
-.access-denied-page h2 {
+.access-denied-page h2,
+.not-found-page h2 {
   margin-bottom: 8px;
 }
 
-.access-denied-page a {
+.access-denied-page a,
+.not-found-page a {
   padding: 8px 16px;
   border: 1px solid #e6cda8;
   border-radius: 7px;
