@@ -1,0 +1,165 @@
+/* ============================================
+   Users pages — list / details / form / edit
+   Layout + borders only (no colors, no radius).
+   ============================================ */
+
+.user-details-page h2,
+.user-form-page h2,
+.edit-user-form-page h2 {
+  margin-bottom: 16px;
+}
+
+/* ---------- Toolbar ---------- */
+
+.page-users .toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  border-radius: 7px;
+}
+
+.page-users .toolbar button,
+.page-users .toolbar input {
+  padding: 8px 12px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.page-users .toolbar button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-users .toolbar input {
+  flex: 1;
+  min-width: 220px;
+  max-width: 360px;
+  cursor: text;
+}
+
+/* ---------- Table actions ---------- */
+
+.page-users td button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+  padding: 4px 12px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.page-users .toolbar button:hover,
+.page-users td button:hover,
+.user-details-page button:hover,
+.user-form-page button:hover,
+.edit-user-form-page button:hover {
+  border-color: #d97b3a;
+  background: #f9e9d3;
+}
+
+.page-users .toolbar input:focus,
+.user-form-page input:focus,
+.user-form-page select:focus,
+.edit-user-form-page input:focus,
+.edit-user-form-page select:focus {
+  border-color: #d97b3a;
+}
+
+/* ---------- Details ---------- */
+
+.user-details-page .details-info {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 480px;
+  margin-bottom: 16px;
+  padding: 24px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  border-radius: 7px;
+}
+
+.user-details-page .details-info p {
+  margin: 0;
+}
+
+.user-details-page button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+/* ---------- Forms ---------- */
+
+.user-form-page form,
+.edit-user-form-page form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 480px;
+  padding: 24px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  border-radius: 7px;
+}
+
+.user-form-page form > div,
+.edit-user-form-page form > div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.user-form-page label,
+.edit-user-form-page label {
+  font-size: 14px;
+  color: #7c6446;
+}
+
+.user-form-page input,
+.edit-user-form-page input,
+.user-form-page select,
+.edit-user-form-page select {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #e6cda8;
+  background: #faf2e5;
+  color: #503c26;
+  border-radius: 7px;
+}
+
+.user-form-page span,
+.edit-user-form-page span {
+  font-size: 14px;
+}
+
+.user-form-page button,
+.edit-user-form-page button {
+  align-self: flex-start;
+  padding: 8px 16px;
+  border: 1px solid #e6cda8;
+  background: #fffdf7;
+  color: #503c26;
+  cursor: pointer;
+  border-radius: 7px;
+}
