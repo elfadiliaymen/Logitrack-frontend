@@ -9,11 +9,9 @@ import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import api from "../../api/api";
 import { getRole } from "../../component/token";
 import Pagination from "@mui/material/Pagination";
-import "./commandes.css";
+import "./orders.css";
 
 const STATUSES = [
-  "NOUVELLE",
-  "EN_PREPARATION",
   "EN_ATTENTE",
   "EXPEDIEE",
   "LIVREE",

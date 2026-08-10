@@ -4,7 +4,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
-import "./commandes.css";
+import "./orders.css";
 
 const schema = yup.object({
   clientId: yup.string().required("Client requis"),

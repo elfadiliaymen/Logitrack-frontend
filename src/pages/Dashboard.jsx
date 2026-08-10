@@ -46,7 +46,7 @@ export default function Dashboard() {
         api.get("/dashboard/orders/count").then((res) => {
           setNbCommandes(res.data);
         });
-        api.get("/dashboard/orders/count/NOUVELLE").then((res) => {
+        api.get("/dashboard/orders/count/EN_ATTENTE").then((res) => {
           setNbEnAttente(res.data);
         });
         api.get("/dashboard/orders/count/EXPEDIEE").then((res) => {

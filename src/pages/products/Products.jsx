@@ -7,7 +7,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import api from "../../api/api";
 import { getRole } from "../../component/token";
 import Pagination from "@mui/material/Pagination";
-import "./produits.css";
+import "./products.css";
 
 const SORT_FIELDS = [
   { value: "nom,asc", label: "Nom (A-Z)" },
@@ -96,7 +96,7 @@ export default function Products() {
           }}
         />
 
-        <label>Prix exact</label>
+        <label>Prix</label>
         <input
           type="number"
           value={prix}
@@ -142,7 +142,6 @@ export default function Products() {
           {products.map((product) => {
             return (
               <div className="product-card" key={product.id}>
-                <p>{product.categorie}</p>
 
                 <h3>{product.nom}</h3>
 

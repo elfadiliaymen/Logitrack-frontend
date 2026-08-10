@@ -15,7 +15,7 @@ export default function Header({ onToggleMenu }) {
     clearSession();
     navigate("/login");
   }
-
+  
   return (
     <header className="app-header">
       <div className="header-group">

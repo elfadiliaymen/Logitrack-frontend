@@ -31,7 +31,7 @@ export default function Clients() {
       .get("/clients", {
         params: {
           page: page,
-          size: 10,
+          size: 7,
           sort: "nom," + sortDir,
           nom: search || undefined,
         },

@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import api from "../../api/api";
-import "./produits.css";
+import "./products.css";
 
 function ProductDetails() {
   const { id } = useParams();

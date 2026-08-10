@@ -4,11 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
-import "./commandes.css";
+import "./orders.css";
 
 const STATUSES = [
-  "NOUVELLE",
-  "EN_PREPARATION",
   "EN_ATTENTE",
   "EXPEDIEE",
   "LIVREE",

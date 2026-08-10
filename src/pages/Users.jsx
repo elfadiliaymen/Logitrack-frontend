@@ -5,15 +5,27 @@ import "./pages.css";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
+  const [page , setPage] = useState(0);
+  const [totalPages , setTotalPages] = useState(1);
 
   function loadUsers() {
     api
-      .get("/users")
+      .get("/users" ,
+        {params : {
+          page : page ,
+          size : 7
+        }}
+      )
       .then(function (response) {
         setUsers(
           Array.isArray(response.data)
             ? response.data
             : (response.data && response.data.content) || []
+        );
+        setTotalPages(
+          Array.isArray(response.data)
+            ? 1
+            : (response.data && response.data.totalPages) || 1
         );
       })
       .catch((error) => {
@@ -21,7 +33,7 @@ export default function Users() {
       });
   }
 
-  useEffect(loadUsers, []);
+  useEffect(loadUsers, [page]);
 
   return (
     <div className="page-users">
@@ -64,7 +76,14 @@ export default function Users() {
       )}
 
       <div className="pagination-row">
-        <Pagination count={10} />
+        <Pagination 
+        count={totalPages} 
+        page={page + 1}
+         onChange={(event, value) => {
+            setPage(value - 1);
+          }}
+        
+        />
       </div>
     </div>
   );

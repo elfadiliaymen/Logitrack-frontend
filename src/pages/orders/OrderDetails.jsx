@@ -4,11 +4,9 @@ import AddIcon from "@mui/icons-material/Add";
 import SaveIcon from "@mui/icons-material/Save";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import api from "../../api/api";
-import "./commandes.css";
+import "./orders.css";
 
 const STATUSES = [
-  "NOUVELLE",
-  "EN_PREPARATION",
   "EN_ATTENTE",
   "EXPEDIEE",
   "LIVREE",

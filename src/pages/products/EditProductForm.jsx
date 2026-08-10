@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../../api/api";
-import "./produits.css";
+import "./products.css";
 
 const schema = yup.object({
   nom: yup.string().required("Nom requis"),
@@ -22,20 +22,37 @@ const schema = yup.object({
     .required("Quantité requise"),
 });
 
-function ProductForm() {
+ function EditProductForm() {
+  const { id } = useParams();
+
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
 
+  useEffect(
+    function () {
+      api
+        .get("/products/" + id)
+        .then((response) => {
+          reset(response.data);
+        })
+        .catch((error) => {
+          console.log("Erreur :", error);
+        });
+    },
+    [id, reset]
+  );
+
   function onSubmit(data) {
     api
-      .post("/products", data)
+      .put("/products/" + id, data)
       .then(() => {
         navigate("/products");
       })
@@ -45,8 +62,8 @@ function ProductForm() {
   }
 
   return (
-    <div className="product-form-page">
-      <h2>Nouveau produit</h2>
+    <div className="edit-product-form-page">
+      <h2>Modifier le produit</h2>
 
       <form onSubmit={handleSubmit(onSubmit)}>
         <div>
@@ -81,10 +98,10 @@ function ProductForm() {
           )}
         </div>
 
-        <button type="submit">Créer</button>
+        <button type="submit">Enregistrer</button>
       </form>
     </div>
   );
 }
 
-export default ProductForm;
+export default EditProductForm;
