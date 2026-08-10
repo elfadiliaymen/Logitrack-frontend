@@ -16,9 +16,7 @@ import ProductForm from "./pages/products/ProductForm";
 import EditProductForm from "./pages/products/EditProductForm";
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/users/Users";
-import UserDetails from "./pages/users/UserDetails";
 import UserForm from "./pages/users/UserForm";
-import EditUserForm from "./pages/users/EditUserForm";
 import Profile from "./pages/Profile";
 import RouteGuard from "./component/RouteGuard";
 import RoleGuard from "./component/RoleGuard";
@@ -78,20 +76,11 @@ function App() {
             }
           />
 
-          <Route
+            <Route
             path="/users"
             element={
               <RoleGuard allowedRoles={["ADMIN"]}>
                 <Users />
-              </RoleGuard>
-            }
-          />
-
-            <Route
-            path="/users/:id"
-            element={
-              <RoleGuard allowedRoles={["ADMIN"]}>
-                <UserDetails />
               </RoleGuard>
             }
           />
@@ -101,15 +90,6 @@ function App() {
             element={
               <RoleGuard allowedRoles={["ADMIN"]}>
                 <UserForm />
-              </RoleGuard>
-            }
-          />
-
-          <Route
-            path="/users/:id/edit"
-            element={
-              <RoleGuard allowedRoles={["ADMIN"]}>
-                <EditUserForm />
               </RoleGuard>
             }
           />

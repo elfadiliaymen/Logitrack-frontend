@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AddIcon from "@mui/icons-material/Add";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import api from "../../api/api";
 import Pagination from "@mui/material/Pagination";
@@ -13,7 +11,6 @@ export default function Users() {
   const [users, setUsers] = useState([]);
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
-  const [search, setSearch] = useState("");
 
   const navigate = useNavigate();
 
@@ -23,7 +20,6 @@ export default function Users() {
         params: {
           page: page,
           size: 7,
-          nom: search || undefined,
         },
       })
       .then((response) => {
@@ -35,7 +31,7 @@ export default function Users() {
       });
   }
 
-  useEffect(loadUsers, [page, search]);
+  useEffect(loadUsers, [page]);
 
   function handleDelete(userId) {
     if (!window.confirm("Voulez-vous vraiment supprimer cet utilisateur ?")) {
@@ -64,16 +60,6 @@ export default function Users() {
         >
           <AddIcon />
         </button>
-
-        <input
-          type="text"
-          placeholder="Rechercher par nom"
-          value={search}
-          onChange={(event) => {
-            setSearch(event.target.value);
-            setPage(0);
-          }}
-        />
       </div>
 
       {users.length === 0 ? (
@@ -108,26 +94,6 @@ export default function Users() {
                   <td>{user.role}</td>
 
                   <td>
-                    <button
-                      type="button"
-                      aria-label="Voir l'utilisateur"
-                      onClick={() => {
-                        navigate("/users/" + user.id);
-                      }}
-                    >
-                      <VisibilityIcon />
-                    </button>
-
-                    <button
-                      type="button"
-                      aria-label="Modifier l'utilisateur"
-                      onClick={() => {
-                        navigate("/users/" + user.id + "/edit");
-                      }}
-                    >
-                      <EditIcon />
-                    </button>
-
                     <button
                       type="button"
                       aria-label="Supprimer l'utilisateur"
